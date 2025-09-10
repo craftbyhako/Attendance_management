@@ -19,20 +19,30 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(User::class),
-            ],
-            'password' => $this->passwordRules(),
-        ])->validate();
+        $rules = [
+            'user_name' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'email', 'string', 'max:255', Rule::unique(User::class)],
+            'password' => ['required', 'min:8', 'string', 'confirmed'],
+        ];
+
+        $messages = [
+            'user_name.required' => 'ユーザー名を入力してください',
+            'user_name.string' => 'ユーザー名は文字で入力してください',
+            'user_name.max' => 'ユーザー名は２０文字以内で入力してください',
+            'email.required' => 'メールアドレスを入力してください',
+            'email.email' => 'メール形式で入力してください',
+            'email.string' => 'メールアドレスは文字で入力してください',
+            'email.max' => 'メールアドレスは２５５文字以内で入力してください',
+            'email.unique' => 'こちらのメールアドレスはすでに登録されています',
+            'password.required' => 'パスワードを入力してください',
+            'password.min' => 'パスワードは８文字以上で入力してください',
+            'password.string' => 'パスワードは文字列で入力してください',
+            'password.confirmed' => 'パスワードと一致しません',
+        ];
+        Validator::make($input, $rules, $messages)->validate();
 
         return User::create([
-            'name' => $input['name'],
+            'user_name' => $input['user_name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
