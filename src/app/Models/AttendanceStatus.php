@@ -4,17 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ApproveStatus;
 
-class UpdatedAttendance extends Model
+class AttendanceStatus extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'attendance_id',
-        'status_id',
-        'update_date',
-        'note',
+        'status',
     ];
 }

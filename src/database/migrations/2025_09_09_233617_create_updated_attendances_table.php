@@ -17,7 +17,7 @@ class CreateUpdatedAttendancesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('attendance_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('status_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('approve_status_id')->constrained()->cascadeOnDelete();
             $table->date('update_date');
             $table->text('note');
             $table->timestamps();
