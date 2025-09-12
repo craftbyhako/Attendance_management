@@ -8,30 +8,42 @@
 <div class="content">
     <h1 class="page-title">勤怠詳細</h1>
 
-    <form action="">
+    <form action="/attendance/detail/{id}" method="POST">
         @csrf
+<!-- 名前と日付はinputじゃないかも？それかinputだけど、cssでボーダーを消す？？hidden？？ -->
+        <label class="detail-form__label" for="user_name">名前</label>
+        <input class="detail-form__input" type="text" id="user_name" value="{{ $user }}">
 
-        <label for="">名前</label>
-        <input type="text">
+        <label class="detail-form__label" for="date">日付</label>
+        <input class="detail-form__input" type="date" id="date" value="{{ $data }}">
 
-        <label for="">日付</label>
-        <input type="text">
+        <!-- divがいいのか、pがいいのか？ -->
+        <div class="detail-form__label" >出勤・退勤
+            <input class="detail-form__label" type="time" value="{{ $clock_in }}">
+            <p>～</p>
+            <input class="detail-form__label" type="time" value="{{ $clock_out}}">
+        </div>
 
-        <label for="">出勤・退勤</label>
-        <input type="text">
+        <label class="detail-form__label" for="break1">休憩</label>
+        <input class="detail-form__input" type="time" id="break1" value="{{ $break1_start }}">
+        <p>～</p>
+        <input class="detail-form__input" type="time" id="break1" value="{{ $break1_end }}">
 
-        <label for="">休憩</label>
-        <input type="text">
+        <label class="detail-form__label" for="break2">休憩２</label>
+        <input class="detail-form__input" type="time" id="break2" value="{{ $break2_start }}">
+        <p>～</p>
+        <input class="detail-form__input" type="time" id="break2" velue="{{ $break2_end }}">
 
-        <label for="">休憩２</label>
-        <input type="text">
+        <label class="detail-form__label" for="note">備考</label>
+        <input class="detail-foem__input" type="text" id="note" value="{{ $note }}">
 
-        <label for="">備考</label>
-        <input type="text">
-
-        <button >修正</button>
+        <button class="detail-form__button" type="submit">修正</button>
     </form>
 
+    @if
+    <!-- 申請済なら、①承認待ちのため修正はできませんの赤字表示、②inputできなくなる -->
+
+    @endif
     <!-- <table>
         <tr>
             <th>名前</th>
@@ -69,6 +81,4 @@
 
 
 </div>
-
-
 @endsection
