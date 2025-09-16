@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call([
             UsersTableSeeder::class,
-            ApproveStatusTableSeeder::class,
-            AttendanceStatusTableSeeder::class,
-            AttendanceTableSeeder::class,
-            UpdatedAttendanceTableSeeder::class,
+            ApproveStatusesTableSeeder::class,
+            AttendanceStatusesTableSeeder::class,
+            AttendancesTableSeeder::class,
+            UpdatedAttendancesTableSeeder::class,
         ]);
     }
 }

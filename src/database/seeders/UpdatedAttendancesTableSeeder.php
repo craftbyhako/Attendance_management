@@ -19,7 +19,7 @@ class UpdatedAttendancesTableSeeder extends Seeder
         $param = [
             'user_id' => 1,
             'attendance_id' => 1,
-            'approve_status_id' => 0,
+            'approve_status_id' => 1,
             'update_date' => '2025-09-10',
             'note' => '所用のため早退します。',
         ];
