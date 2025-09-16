@@ -12,28 +12,32 @@
 <body>
     <header class="header">
         <div class="header__logo">
-            <a href="/"><img src="{{ asset('img/logo.png') }}" alt="ロゴ"></a>
+            <a href="/login">coachtch
+                <!-- <img src="{{ asset('img/logo.png') }}" alt="ロゴ"> -->
+            </a>
         </div>
-    <!-- @if( !in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice']) ) -->
+    @if( !in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice']) )
     
         <nav class="header__nav">
             <ul>
                 @if(Auth::check())
             
-            <!-- リンク先入力 -->
-                <li><a href="">勤怠</a></li> 
+            <!-- ログイン時のリンク先入力 -->
+                    <li><a href="">勤怠</a></li> 
+                    <li><a href="">勤怠一覧</a></li>
+                    <li><a href="">申請</a></li>
+                    <li>
+                        <form action="{{ route('logout') }}" method="post">
+                            @csrf
+                            <button class="header__logout">ログアウト</button>
+                        </form>
+                    </li>
                 @else
-                <li><a href="">勤怠一覧</a></li>
-                <li><a href="">申請</a></li>
-                <li>
-                    <form action="/logout" method="post">
-                        csrf
-                        <button class="header__logout">ログアウト</button>
-                    </form>
-                </li>
+                <!-- ログインしていないときのリンク先 -->
+                    <li><a href="{{ route('login') }}">ログイン</a></li>
+                    <li><a href="{{ route('register') }}">会員登録</a></li>
 
                 @endif
-            
             </ul>
         </nav>
         @endif
