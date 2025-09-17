@@ -17,5 +17,7 @@ use App\Http\Controllers\UserController;
 Route::middleware(['auth'])->group(function() {
     Route::get('/attendance', [UserController::class, 'create'])
         ->name('attendance.create');
+
+    Route::post('/attendance', [UserController::class, 'store'])->name('user.store');
 });
 

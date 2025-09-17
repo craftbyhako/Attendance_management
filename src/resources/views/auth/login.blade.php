@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="content">
-    <form class="login-form" action="/login" method="POST">
+    <form class="login-form" action="/login" method="POST" novalidate>
         @csrf
         <h1 class="page-title">ログイン</h1>
 
@@ -20,15 +20,15 @@
 
         <label class="login-form__label" for="password">パスワード</label>
         <input class="login-form__input" type="password" id="password" name="password">
-        <div class="form-error">
+        <div class="form__error">
             @error('password')
                 {{ $message }}
             @enderror
         </div>
 
-        <button class="login-form__button">ログインする</button>
+        <button class="login__button" type="submit">ログインする</button>
 
-        <a class="login-form__link" href="/register">会員登録はこちら</a>
+        <a class="login__link" href="/register">会員登録はこちら</a>
     </form>
 </div>
 @endsection

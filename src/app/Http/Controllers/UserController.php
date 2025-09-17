@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Attendance;
+use App\Http\Requests\DetailRequest;
 
 class UserController extends Controller
 {
     public function create() 
     {
-        return view('user.create_attendance');
+        $attendance = Attendance::where('user_id', auth()->id())->latest()->first();
+        return view('user.create-attendance', compact('attendance'));
     }
 
     public function store(DetailRequest $request)
     {
         $action = $request->input('action');
-        $user = Auth::user;
+        $user = Auth::user();
 
         switch($action) {
             // 出勤処理
@@ -22,7 +25,7 @@ class UserController extends Controller
                 $user->attendances()->create
                 ([
                     'attendance_status_id' => 2,
-                    'clock_in' => now,
+                    'clock_in' => now(),
                 ]);
                 break;
 
@@ -40,7 +43,7 @@ class UserController extends Controller
                 $user->attendances()->latest()->first()->update
                 ([
                     'attendance_status_id' => 3,
-                    'break1_start'
+                    'break1_start' => now(),
                 ]);
                 break;
 
@@ -54,7 +57,7 @@ class UserController extends Controller
                 break;
         }
 
-        return redirect()->back;
+        return redirect()->back();
     }
     
 }

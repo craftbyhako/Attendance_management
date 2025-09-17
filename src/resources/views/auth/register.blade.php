@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="content">
-    <form class="register-form" action="/register" method="POST">
+    <form class="register-form" action="/attendance" method="POST">
         @csrf
         <h1 class="page-title">会員登録</h1>
             <label class="register-form__label" for="user_name">ユーザー名</label>

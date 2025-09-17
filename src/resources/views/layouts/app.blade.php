@@ -17,17 +17,23 @@
     @if( !in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice']) )
          {{ Route::currentRouteName() }}
         <nav class="header__nav">
-            <ul>
+            <ul class="header__nav--group">
                 @if(Auth::check())
             
             <!-- ログイン時のリンク先入力 -->
-                    <li><a href="">勤怠</a></li> 
-                    <li><a href="">勤怠一覧</a></li>
-                    <li><a href="">申請</a></li>
-                    <li>
+                    <li class="header__nav--item">
+                        <a class="header__nav--link" href="">勤怠</a>
+                    </li> 
+                    <li class="header__nav--item">
+                        <a class="header__nav--link" href="">勤怠一覧</a>
+                    </li>
+                    <li class="header__nav--item">
+                        <a class="header__nav--link" href="">申請</a>
+                    </li>
+                    <li class="header__nav--item">
                         <form action="{{ route('logout') }}" method="post">
                             @csrf
-                            <button class="header__logout">ログアウト</button>
+                            <button class="header__logout" type="submit" action="/logout">ログアウト</button>
                         </form>
                     </li>
                 @else

@@ -4,10 +4,43 @@ body {
 
 .header {
     background-color: black;
-    height: 100px;
+    height: 90px;
     display: flex;
     align-items: center;
     padding: 0 20px;
+    justify-content: space-between;
     
 }
 
+.header__nav {
+    display: flex;
+    flex-direction: row;
+        /* 念のため横方向 */
+    justify-content: flex-start;
+}
+
+.header__nav--group {
+    display: flex;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.header__nav--item {
+    margin: 0;
+    padding: 0;
+}
+
+
+.header__nav a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.header__logout {
+    border: none;
+    background-color: #000;
+    color: #fff;
+    font-size: 17px;
+    cursor: pointer;
+}

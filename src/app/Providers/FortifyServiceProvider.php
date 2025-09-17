@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use App\Http\Requests\LoginRequest as CustomLoginRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -61,5 +65,53 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
+
+        $this->app->singleton(RegisterResponse::class, function () {
+            return new class implements RegisterResponse 
+            {
+                public function toResponse($request)
+                {
+                    return redirect('/attendance');
+                } 
+            };
+        });
+
+         $this->app->singleton(LoginResponse::class, function () {
+            return new class implements LoginResponse 
+            {
+                public function toResponse($request)
+                {
+                    return redirect('/attendance');
+                } 
+            };
+        });
+
+        // LoginRequest のバリデーションを実行する
+        // Fortify::authenticateUsing(function ($request) {
+        //     $request->validate(); 
+        
+        //     $user = Auth::getProvider()->retrieveByCredentials([
+        //         'email' => $request->email,
+        //         'password' => $request->password,
+        //     ]);
+
+        //     if ($user && Auth::validate(['email' => $request->email, 'password' => $request->password])) {
+        //     return $user;
+        //     }
+
+        //     return null;
+        // });
+        Fortify::authenticateUsing(function ($request) {
+            $customRequest = CustomLoginRequest::createFrom($request->toArray());
+            $customRequest->validate();
+            
+            $user = User::where('email', $request->email)->first();
+
+            if ($user && Hash::check($request->password, $user->password)) {
+            
+            return $user;
+            }
+        });
+
     }
 }

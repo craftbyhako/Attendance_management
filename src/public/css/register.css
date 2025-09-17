@@ -1,28 +1,28 @@
 .content {
     display: flex;
-        justify-content: center;
-        /* 横方向中央 */
-        /* align-items: center; */
-        /* 縦方向中央 */
-        /* min-height: calc(100vh - 200px); */
-        /* ヘッダー高さを引いた分で画面中央 */
-        padding: 20px;
-        /* 必要に応じて余白 */
-        box-sizing: border-box;
-   
+    justify-content: center;
+    /* 横方向中央 */
+    /* align-items: center; */
+    /* 縦方向中央 */
+    /* min-height: calc(100vh - 200px); */
+    /* ヘッダー高さを引いた分で画面中央 */
+    padding: 20px;
+    /* 必要に応じて余白 */
+    box-sizing: border-box;
+
 }
 
 .register-form {
     width: 530px;
-        /* 好みで調整 */
-        background-color: #fff;
-        /* 背景色（任意） */
-        padding: 40px;
+    /* 好みで調整 */
+    background-color: #fff;
+    /* 背景色（任意） */
+    padding: 40px;
 
 }
 
 .page-title {
-text-align: center;
+    text-align: center;
     /* 横中央 */
     font-size: 24px;
     /* お好みでサイズ調整 */
@@ -62,7 +62,7 @@ text-align: center;
     margin-top: 20px;
     box-sizing: border-box;
     font-size: 16px;
-} 
+}
 
 .register__link {
     display: block;
@@ -72,3 +72,6 @@ text-align: center;
     cursor: pointer;
 }
 
+.form__error {
+    color: red;
+}
