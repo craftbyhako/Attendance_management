@@ -12,12 +12,10 @@
 <body>
     <header class="header">
         <div class="header__logo">
-            <a href="/login">coachtch
-                <!-- <img src="{{ asset('img/logo.png') }}" alt="ロゴ"> -->
-            </a>
+            <a href="/login"><img src="{{ asset('storage/img/coachtech_logo.svg') }}" alt="ロゴ"></a>
         </div>
     @if( !in_array(Route::currentRouteName(), ['register', 'login', 'verification.notice']) )
-    
+         {{ Route::currentRouteName() }}
         <nav class="header__nav">
             <ul>
                 @if(Auth::check())
@@ -44,7 +42,7 @@
         @yield('link')
     </header>
 
-    <main>
+    <main class="content">
         @yield('content')
     </main>
 </body>
