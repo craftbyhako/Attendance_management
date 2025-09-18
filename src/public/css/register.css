@@ -35,6 +35,7 @@
 .register-form__label {
     display: block;
     /* 縦並びの基本 */
+    margin-top: 25px;
     margin-bottom: 8px;
     /* 下に余白 */
     font-weight: bold;
@@ -46,7 +47,7 @@
     width: 100%;
     /* フォーム幅に合わせる */
     padding: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     /* 下に余白 */
     border: 1px solid #000;
     box-sizing: border-box;
@@ -74,4 +75,5 @@
 
 .form__error {
     color: red;
+    margin-bottom: 20px;
 }

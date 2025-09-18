@@ -19,6 +19,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
+
         $rules = [
             'user_name' => ['required', 'string', 'max:20'],
             'email' => ['required', 'email', 'string', 'max:255', Rule::unique(User::class)],
@@ -40,6 +41,7 @@ class CreateNewUser implements CreatesNewUsers
             'password.confirmed' => 'パスワードと一致しません',
         ];
         Validator::make($input, $rules, $messages)->validate();
+    
 
         return User::create([
             'user_name' => $input['user_name'],

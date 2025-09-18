@@ -8,21 +8,12 @@ use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 
 class LoginRequest extends FortifyLoginRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+   
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         return [
@@ -38,6 +29,7 @@ class LoginRequest extends FortifyLoginRequest
             'email.email' => 'メール形式で入力してください',
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは８文字以上で入力してください',
+            'email.exists' => 'ログイン情報が登録されていません'
         ];
     }
 }

@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
-use App\Http\Requests\LoginRequest as CustomLoginRequest;
+use App\Http\Requests\LoginRequest;
+use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
 
 
 class FortifyServiceProvider extends ServiceProvider
@@ -101,17 +104,38 @@ class FortifyServiceProvider extends ServiceProvider
 
         //     return null;
         // });
-        Fortify::authenticateUsing(function ($request) {
-            $customRequest = CustomLoginRequest::createFrom($request->toArray());
-            $customRequest->validate();
+        // Fortify::authenticateUsing(function ($request) {
+        //     $customRequest = CustomLoginRequest::createFrom($request->toArray());
+        //     $customRequest->validate();
             
+        //     $user = User::where('email', $request->email)->first();
+
+        //     if ($user && Hash::check($request->password, $user->password)) {
+            
+        //     return $user;
+        //     }
+        // });
+
+        Fortify::authenticateUsing(function (LoginRequest $request) {
+            
+            $request->validated();
+            // ユーザーを検索
             $user = User::where('email', $request->email)->first();
 
-            if ($user && Hash::check($request->password, $user->password)) {
-            
-            return $user;
+            // パスワードを確認
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'email' => ['ログイン情報が登録されていません'],       
+                ]);
             }
+            return $user;
         });
+
+        // ログインフォームのバリデーション
+        $this->app->bind(
+            FortifyLoginRequest::class,
+            LoginRequest::class
+        );
 
     }
 }

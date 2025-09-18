@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +21,13 @@ Route::middleware(['auth'])->group(function() {
         ->name('attendance.create');
 
     Route::post('/attendance', [UserController::class, 'store'])->name('user.store');
+
+    Route::post('/logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login'); // ログアウト後は login
+    })->name('logout');
 });
 
