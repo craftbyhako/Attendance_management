@@ -5,16 +5,16 @@
 @endsection
 
 @section('content')
-<div class="content">
+<div class="container">
     
 
-    <form action="{{ route('user.store') }}" method="POST" >
+    <form class="create__form" action="{{ route('user.store') }}" method="POST" >
         @csrf
         
         @if($attendance)
             @if($attendance->attendance_status_id === 1)
             <!-- 出勤前の時 -->
-                <p>勤務外</p>
+                <p class="create__item--status">勤務外</p>
 
                 <div class="create__item--date">
                     {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
@@ -28,7 +28,7 @@
 
             @elseif ($attendance->attendance_status_id === 3)
              <!-- 休憩中の時 -->
-                <p>休憩中</p>
+                <p class="create__item--status">休憩中</p>
 
                 <div class="create__item--date">
                     {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
@@ -42,7 +42,7 @@
 
             @elseif($attendance->attendance_status_id === 4)
             <!-- 退勤を押した時 -->
-                <p>退勤済</p>
+                <p class="create__item--status">退勤済</p>
 
                 <div class="create__item--date">
                     {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
@@ -57,7 +57,7 @@
 
             @else
             <!-- 勤務中の時 -->
-                <p>出勤中</p>
+                <p class="create__item--status">出勤中</p>
 
                 <div class="create__item--date">
                     {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
@@ -71,7 +71,7 @@
                 <button type="submit" name="action" value="break1_start">休憩入（＝出勤中）</button>
             @endif
         @else
-            <p>まだ勤怠記録はありません</p>
+            <p class="create__item--status">まだ勤怠記録はありません</p>
             <div class="create__item--date">
                     {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
                 </div>

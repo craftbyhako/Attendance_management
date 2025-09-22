@@ -1,0 +1,21 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.create__form {
+    width: 400px;
+    text-align: center;
+}
+
+.create__item--status {
+    border: 1em gray solid;
+}
