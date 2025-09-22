@@ -20,7 +20,7 @@ class CreateAttendancesTable extends Migration
             $table->string('year_month');
             $table->string('day');
             $table->time('clock_in');
-            $table->time('clock_out');
+            $table->time('clock_out')->nullable();
             $table->time('break1_start')->nullable();
             $table->time('break1_end')->nullable();
             $table->time('break2_start')->nullable();

@@ -12,4 +12,9 @@ class AttendanceStatus extends Model
     protected $fillable = [
         'status',
     ];
+
+    public function attendance() 
+    {
+        return $this->hasMany(AttendanceStatus::class);
+    }
 }

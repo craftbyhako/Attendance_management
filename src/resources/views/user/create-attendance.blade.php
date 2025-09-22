@@ -7,7 +7,7 @@
 @section('content')
 <div class="content">
     
-<!-- 勤務外・出勤中・休憩中・退勤済　※勤務外と退勤済の違いは？ -->
+
     <form action="{{ route('user.store') }}" method="POST" >
         @csrf
         
@@ -17,7 +17,7 @@
                 <p>勤務外</p>
 
                 <div class="create__item--date">
-                    {{ \Carbon\Carbon::now()->local('ja')->isoFormat('YYYY年M月D日（ddd）') }}
+                    {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
                 </div>
 
                 <div class="create__item--time">
@@ -31,7 +31,7 @@
                 <p>休憩中</p>
 
                 <div class="create__item--date">
-                    {{ \Carbon\Carbon::now()->local('ja')->isoFormat('YYYY年M月D日（ddd）') }}
+                    {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
                 </div>
 
                 <div class="create__item--time">
@@ -45,7 +45,7 @@
                 <p>退勤済</p>
 
                 <div class="create__item--date">
-                    {{ \Carbon\Carbon::now()->local('ja')->isoFormat('YYYY年M月D日（ddd）') }}
+                    {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
                 </div>
 
                 <div class="create__item--time">
@@ -60,7 +60,7 @@
                 <p>出勤中</p>
 
                 <div class="create__item--date">
-                    {{ \Carbon\Carbon::now()->local('ja')->isoFormat('YYYY年M月D日（ddd）') }}
+                    {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
                 </div>
 
                 <div class="create__item--time">
@@ -72,6 +72,13 @@
             @endif
         @else
             <p>まだ勤怠記録はありません</p>
+            <div class="create__item--date">
+                    {{ \Carbon\Carbon::now()->locale('ja')->isoFormat('YYYY年M月D日（ddd）') }}
+                </div>
+
+                <div class="create__item--time">
+                    {{ \Carbon\Carbon::now()->format('H:i') }}
+                </div>      
             <button type="submit" name="action" value="clock_in">出勤</button>
         @endif
     </form>

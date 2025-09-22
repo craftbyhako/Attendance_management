@@ -11,7 +11,7 @@ class Attendance extends Model
 
     protected $fillable = [
         'user_id',
-        'attendance_statuses_id',
+        'attendance_status_id',
         'year_month',
         'day',
         'clock_in',
@@ -21,4 +21,15 @@ class Attendance extends Model
         'break2_start',
         'break2_end',
     ];
+
+    public function user() 
+    {
+        return $this->belongsTo(User::class);
+    }
+
+     public function attendanceStatus()
+    {
+        return $this->belongsTo(AttendanceStatus::class);
+    }
 }
+
