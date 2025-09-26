@@ -32,11 +32,24 @@ class UserController extends Controller
             ]);
         }
 
-        $statusLabel = match($attendance->attendance_sutatus_id) {
-                1 => '勤務外',
-                2 => '出勤中',
-                3 => '休憩中',
-                4 => '退勤済',
+        // dd($attendance->attendance_status_id);
+
+        switch ($attendance->attendance_status_id) {
+            case 1:
+                $statusLabel = '勤務外';
+                break;
+            case 2:
+                $statusLabel = '出勤中';
+                break;
+            case 3:
+                $statusLabel = '休憩中';
+                break;
+            case 4:
+                $statusLabel = '退勤済';
+                break;
+            default:
+                $statusLabel = '不明';
+                break;
         };
 
         $breakPairs = ['break1_start', 'break1_end', 'break2_start', 'break2_end'];
