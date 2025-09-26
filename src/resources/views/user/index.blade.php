@@ -8,12 +8,12 @@
 <div class="container">
     <h1 class="page-title">勤怠一覧</h1>
     <div class="index__group--target">
-        <a href="{{ route('user.index', ['month => $prev_month']) }}">⇐　前月</a>
+        <a href="{{ route('user.index', ['month => $prev_month']) }}"><img src="{{ asset('img/left_arrow.png') }}" alt="">前月</a>
         
-        <image src="">
+        <image src="{{ asset('img/calender.png') }}">
         {{ $target_month }}
 
-        <a href="{{ route('user.index', ['month => $prev_month']) }}">⇒　翌月</a>
+        <a href="{{ route('user.index', ['month => $prev_month']) }}"><img src="storage/img/right_arrow.png" alt="">翌月</a>
     </div>
 
     <div class="index__group--table">
@@ -32,12 +32,12 @@
                 @foreach($attendances as $attendance)
                 <tr>
                     
-                    {{-- <td>{{ $attendance->day }}</td>
+                    <td>{{ $attendance->day }}</td>
                     <td>{{ $attendance->clock_in}}</td>
                     <td>{{ $attendance->clock_out}}</td>
-                    <td>{{ $break_timetarget_break_total}}</td>
-                    <td>{{ $target_work_total}}</td>
-                    <td><a href="/attendance/detail/{id}">詳細</a></td>  --}}
+                    <td>{{ $totalBreakTime ?? ''}}</td>
+                    <td>{{ $totalWorkingTime ?? ''}}</td>
+                    <td><a href="/attendance/detail/{id}">詳細</a></td>
                 </tr>
                 @endforeach
             </tbody>

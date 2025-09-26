@@ -135,29 +135,35 @@ class UserController extends Controller
 
     public function index()
     {
-        $target_month = Carbon::now()->locale('ja')->isoFormat('YYYY/MM');
+        $user = Auth::user();
+        $target_month = Carbon::now()->format('Y-m');
         $attendances = Attendance::where('year_month', $target_month)
-        // ->select(
-        //     'user_id',
-        //     'year_month',
-        //     'day',
-        //     'clock_in',
-        //     'clock_out',
-        //     'break1_start',
-        //     'break1_end',
-        //     'break2_start',
-        //     'break2_end'
-        // )
-        ->get();
+        ->select(
+            'user_id',
+            'year_month',
+            'day',
+            'clock_in',
+            'clock_out',
+            'break1_start',
+            'break1_end',
+            'break2_start',
+            'break2_end'
+        )
+        ->get()
+        ->map(function ($attendance) {
+            // Carbonで秒なしにフォーマット
+            $attendance->clock_in = Carbon::parse($attendance->clock_in)->format('H:i');
+            $attendance->clock_out = Carbon::parse($attendance->clock_out)->format('H:i');
+
+            return $attendance;
+        });
 
         $prev_month = Carbon::now()->subMonth()->format('Y-m');
         $next_month = Carbon::now()->addMonth()->format('Y-m');
-
-       
-        
-        
-        
-        return view('user.index', compact('attendances', 'target_month'));
-    }
     
+        
+        
+        
+        return view('user.index', compact('attendances', 'target_month', 'prev_month', 'next_month'));
+    }
 }
