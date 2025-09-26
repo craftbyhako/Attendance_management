@@ -29,5 +29,7 @@ Route::middleware(['auth'])->group(function() {
 
         return redirect('/login'); // ログアウト後は login
     })->name('logout');
+
+    Route::get('/attendance/list', [UserController::class, 'index'])->name('user.index');
 });
 

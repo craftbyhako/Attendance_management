@@ -22,10 +22,10 @@
             
             <!-- ログイン時のリンク先入力 -->
                     <li class="header__nav--item">
-                        <a class="header__nav--link" href="">勤怠</a>
+                        <a class="header__nav--link" href="/attendance">勤怠</a>
                     </li> 
                     <li class="header__nav--item">
-                        <a class="header__nav--link" href="">勤怠一覧</a>
+                        <a class="header__nav--link" href="/attendance/list">勤怠一覧</a>
                     </li>
                     <li class="header__nav--item">
                         <a class="header__nav--link" href="">申請</a>

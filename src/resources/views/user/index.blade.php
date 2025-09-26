@@ -1,20 +1,19 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/index.css')}}">
+<link rel="stylesheet" href="{{ asset('css/user/index.css')}}">
 @endsection
 
 @section('content')
-<div class="content">
+<div class="container">
     <h1 class="page-title">勤怠一覧</h1>
-
     <div class="index__group--target">
-        <a href="">⇐　前月</a>
+        <a href="{{ route('user.index', ['month => $prev_month']) }}">⇐　前月</a>
         
         <image src="">
         {{ $target_month }}
 
-        <a href="">⇒　翌月</a>
+        <a href="{{ route('user.index', ['month => $prev_month']) }}">⇒　翌月</a>
     </div>
 
     <div class="index__group--table">
@@ -30,18 +29,20 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($dates as $date)
+                @foreach($attendances as $attendance)
                 <tr>
-                    <!-- <td>{{ $date->format('d') }}</td>
-                    <td>{{ $data->locale('ja')->isoFormat('ddd') }}</td>
-                    <td>{{ $data->locale('ja')->isoFormat('ddd') }}</td>
-                    <td>{{ $target_clock_out}}</td>
-                    <td>{{ $target_break_total}}</td>
-                    <td>{{ $target_work_total}}</td> -->
-                    <td><a href="/attendance/detail/{id}">詳細</a></td>
+                    
+                    {{-- <td>{{ $attendance->day }}</td>
+                    <td>{{ $attendance->clock_in}}</td>
+                    <td>{{ $attendance->clock_out}}</td>
+                    <td>{{ $break_timetarget_break_total}}</td>
+                    <td>{{ $target_work_total}}</td>
+                    <td><a href="/attendance/detail/{id}">詳細</a></td>  --}}
                 </tr>
                 @endforeach
             </tbody>
         </table>
-    </div>
+    </form>
+</div>
+@endsection
 
