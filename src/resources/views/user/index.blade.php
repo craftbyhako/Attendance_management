@@ -10,7 +10,7 @@
     <div class="index__table"></div>
         <div class="index__group--target">
             <!-- 前月リンク -->
-            <a href="{{ route('user.index', ['month' => $prev_month]) }}"><img src="{{ asset('img/left_arrow.png') }}" alt="">前月</a>
+            <a href="{{ route('user.index', ['month' => $prev_month]) }}"><img src="{{ asset('storage/img/left_arrow.png') }}" alt="">　前月</a>
         
             <!-- 当月（デフォルト） -->
             <div class="center-month">
@@ -19,7 +19,7 @@
             </div>
 
             <!-- 次月リンク -->
-            <a href="{{ route('user.index', ['month' => $prev_month]) }}"><img src="storage/img/right_arrow.png" alt="">翌月</a>
+            <a href="{{ route('user.index', ['month' => $prev_month]) }}">翌月　<img src="{{ asset('storage/img/right_arrow.png') }}" alt=""></a>
         </div>
 
         <div class="index__group--table">
@@ -37,7 +37,6 @@
                 <tbody>
                     @foreach($attendances as $attendance)
                     <tr>
-                    
                         <td>{{ Carbon\Carbon::parse($attendance->year_month . '-' . $attendance->day)->locale('ja')->isoFormat('MM/DD (ddd) ') }}</td>
                         <td>{{ $attendance->clock_in}}</td>
                         <td>{{ $attendance->clock_out}}</td>

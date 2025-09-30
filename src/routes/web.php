@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function() {
 
     Route::get('/attendance/list', [UserController::class, 'index'])->name('user.index');
 
-    Route::get('/attendance/detail/{id}', [UserController::class, 'detail'])->name('user.detail');
+    Route::get('/attendance/detail/{id}', [UserController::class, 'showDetail'])->name('user.showDetail');
+
+
 });
 

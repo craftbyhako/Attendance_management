@@ -195,8 +195,15 @@ class UserController extends Controller
         return view('user.index', compact('attendances', 'target_month', 'prev_month', 'next_month'));
     }
 
-    public function show($id){
+    public function showDetail($id){
         $attendance = Attendance::find($id);
         return view('user.detail', compact('attendance'));
     }
+
+    // public function update($request) {
+    //     $user = Auth::user();
+    //     $attendance->clock_in = $request->clock_in;
+    //     $attendance->save(); 
+    //     return redirect('/attendance')->with('success', '詳細情報を更新しました');
+    // }
 }
