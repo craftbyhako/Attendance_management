@@ -1,0 +1,97 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-color: rgb(237, 235, 235);
+}
+
+.container {
+    width: 900px;
+    margin: 80px auto 0;
+}
+
+.page-title {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.index__table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 14px;
+}
+
+.index__group--target {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffff;
+    border-radius: 10px;
+    font-size: 20px;
+    color: black;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin: 40px 0 20px 0;
+    cursor: pointer;
+   
+}
+
+.index__group--target a {
+    text-decoration: none;
+    color: black;
+}
+
+.center-month {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.index__group--table {
+    margin: 0 auto;
+    margin-bottom: 50px;
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffff;
+    font-size: 18px;
+    color: gray;
+    padding: 8px;
+    border-bottom: 1px solid lightgray;
+}
+
+.index__group--table table {
+    width: 100%;
+    /* div に合わせる */
+    border-collapse: collapse;
+}
+
+.index__group--table  th,
+.index__group--table  td {
+    padding: 8px 4px;
+    border-bottom: 1px solid lightgray;
+    font-size: 15px;
+    line-height: 19px;
+    letter-spacing: 0.15em;
+    text-align: center;
+}
+
+.index__group--table td:nth-child(2),
+.index__group--table td:nth-child(3),
+.index__group--table td:nth-child(4),
+.index__group--table td:nth-child(5) {
+    text-align: center;
+}
+
+.index__group--table td a {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    color: black; 
+}
+
+

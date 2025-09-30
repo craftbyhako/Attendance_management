@@ -31,5 +31,7 @@ Route::middleware(['auth'])->group(function() {
     })->name('logout');
 
     Route::get('/attendance/list', [UserController::class, 'index'])->name('user.index');
+
+    Route::get('/attendance/detail/{id}', [UserController::class, 'detail'])->name('user.detail');
 });
 

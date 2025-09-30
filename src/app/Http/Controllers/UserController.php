@@ -139,6 +139,7 @@ class UserController extends Controller
         $target_month = Carbon::now()->format('Y-m');
         $attendances = Attendance::where('year_month', $target_month)
         ->select(
+            'id',
             'user_id',
             'year_month',
             'day',
@@ -151,19 +152,51 @@ class UserController extends Controller
         )
         ->get()
         ->map(function ($attendance) {
-            // Carbonで秒なしにフォーマット
-            $attendance->clock_in = Carbon::parse($attendance->clock_in)->format('H:i');
-            $attendance->clock_out = Carbon::parse($attendance->clock_out)->format('H:i');
+            // 秒なし表示
+            $attendance->clock_in = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '';
+            $attendance->clock_out = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
 
+            // 休憩時間の計算
+            $totalBreakTime = 0;
+            
+            if ($attendance->break1_start && $attendance->break1_end) {
+                $totalBreakTime += Carbon::parse($attendance->break1_end)->diffInMinutes(Carbon::parse($attendance->break1_start)); 
+            }
+
+            if ($attendance->break2_start && $attendance->break2_end) {
+                $totalBreakTime+= Carbon::parse($attendance->break2_end)->diffInMinutes(Carbon::parse($attendance->break2_start));
+            }
+
+            // 分を変換
+            $hours = floor($totalBreakTime / 60);
+            $minutes = $totalBreakTime % 60;
+            $attendance->totalBreakTime = sprintf('%02d:%02d', $hours, $minutes);
+
+            // 労働時間の計算
+            if ($attendance->clock_in && $attendance->clock_out) {
+                $workMinutes = Carbon::parse($attendance->clock_out)->diffInMinutes(Carbon::parse($attendance->clock_in)) - $totalBreakTime;
+                
+                if ($workMinutes < 0){
+                    $workMinutes = 0;
+                }
+                
+                $workHours = floor($workMinutes / 60);
+                $workRemainMinutes = $workMinutes % 60;
+                $attendance->totalWorkingTime = sprintf('%02d:%02d', $workHours, $workRemainMinutes);
+            } else {
+                $attendance->totalWorkingTime = '';
+            }
             return $attendance;
         });
 
         $prev_month = Carbon::now()->subMonth()->format('Y-m');
         $next_month = Carbon::now()->addMonth()->format('Y-m');
-    
-        
-        
         
         return view('user.index', compact('attendances', 'target_month', 'prev_month', 'next_month'));
+    }
+
+    public function show($id){
+        $attendance = Attendance::find($id);
+        return view('user.detail', compact('attendance'));
     }
 }
