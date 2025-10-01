@@ -1,0 +1,8 @@
+.detail-form__input::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+.detail-form__input {
+    -moz-appearance: textfield;
+}

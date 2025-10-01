@@ -34,6 +34,6 @@ Route::middleware(['auth'])->group(function() {
 
     Route::get('/attendance/detail/{id}', [UserController::class, 'showDetail'])->name('user.showDetail');
 
-
+    Route::patch('/attendance/detail/{id}', [UserController::class, 'updateDetail'])->name('user.updateDetail');
 });
 
