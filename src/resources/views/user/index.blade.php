@@ -19,7 +19,7 @@
             </div>
 
             <!-- 次月リンク -->
-            <a href="{{ route('user.index', ['month' => $prev_month]) }}">翌月　<img src="{{ asset('storage/img/right_arrow.png') }}" alt=""></a>
+            <a href="{{ route('user.index', ['month' => $next_month]) }}">翌月　<img src="{{ asset('storage/img/right_arrow.png') }}" alt=""></a>
         </div>
 
         <div class="index__group--table">
@@ -42,7 +42,7 @@
                         <td>{{ $attendance->clock_out}}</td>
                         <td>{{ $attendance->totalBreakTime }}</td>
                         <td>{{ $attendance->totalWorkingTime }}</td>
-                        <td><a href="{{ route('user.detail', ['id' => $attendance->id]) }}">詳細</a></td>
+                        <td><a href="{{ route('user.showDetail', ['id' => $attendance->id]) }}">詳細</a></td>
                     </tr>
                     @endforeach
                 </tbody>

@@ -133,10 +133,12 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        $target_month = Carbon::now()->format('Y-m');
+        
+        $target_month = $request->input('month', Carbon::now()->format('Y-m'));
+        
         $attendances = Attendance::where('year_month', $target_month)
         ->select(
             'id',
@@ -189,8 +191,9 @@ class UserController extends Controller
             return $attendance;
         });
 
-        $prev_month = Carbon::now()->subMonth()->format('Y-m');
-        $next_month = Carbon::now()->addMonth()->format('Y-m');
+        $carbonMonth = Carbon::parse($target_month);
+        $prev_month = $carbonMonth->copy()->subMonth()->format('Y-m');
+        $next_month = $carbonMonth->copy()->addMonth()->format('Y-m');
         
         return view('user.index', compact('attendances', 'target_month', 'prev_month', 'next_month'));
     }
