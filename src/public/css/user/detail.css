@@ -1,3 +1,66 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-color: rgb(237, 235, 235);
+}
+
+.container {
+    width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.page-title {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.detail-form {
+    background-color: #fff;
+    padding: 5px 40px;
+    margin: 0 auto;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.detail-form__item {
+    margin-bottom: 10px;
+    border-bottom: 2px rgb(237, 235, 235) solid;
+    display: flex;
+    text-align: left;
+    height: 60px;
+    gap: 60px;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-left: -40px;
+        /* 親 padding と同じ値を負にする */
+    margin-right: -40px;
+    
+}
+
+.detail-form__item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.detail-form__label {
+    color: lightslategray;
+    width: 200px;
+    margin-left: 30px;
+}
+
+.detail-form__input {
+    font-weight: bold;
+    width: 150px;
+    height:30px;
+    font-size: 17px;
+    padding: 3px auto;
+    align-items: center;
+    gap: 15px;
+}
+
 .detail-form__input::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
@@ -5,4 +68,26 @@
 
 .detail-form__input {
     -moz-appearance: textfield;
+}
+
+.detail-form__textarea {
+    width: 430px;
+    height: 40px;
+    padding: 10px;
+   
+}
+
+.detail-form__button-wrapper {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.detail-form__button {
+    width: 150px;
+    background-color: black;
+    color: #FFF;
+    border-radius: 3px;
+    font-size: 17px;
+    display: inline-block;
+    padding: 8px 12px;
 }
