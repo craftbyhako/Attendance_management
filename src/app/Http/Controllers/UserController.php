@@ -222,12 +222,15 @@ class UserController extends Controller
     public function updateDetail(DetailRequest $request, $id) 
     {
         $user = Auth::user();
+        $attendance = Attendance::find($id);
+
         $attendance->clock_in = $request->input('clock_in');
         $attendance->clock_out = $request->input('clock_out');
         $attendance->break1_start = $request->input('break1_start');
         $attendance->break1_end = $request->input('break1_end');
         $attendance->break2_start = $request->input('break2_start');
         $attendance->break2_end = $request->input('break2_end');
+        $attendance->note = $request->input('note');
         $attendance->save(); 
         
         return redirect('/attendance')->with('success', '詳細情報を更新しました');

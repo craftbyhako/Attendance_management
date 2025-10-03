@@ -18,11 +18,19 @@ body {
 }
 
 .detail-form {
-    background-color: #fff;
     padding: 5px 40px;
     margin: 0 auto;
     align-items: center;
     border-radius: 5px;
+    background-color: #fff;
+}
+
+.detail-form__card {
+    background-color: #fff;
+    /* 白背景カード */
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .detail-form__item {
@@ -77,9 +85,17 @@ body {
    
 }
 
-.detail-form__button-wrapper {
+.error-messages {
+    font-size: 12px;
+    color: red;
+}
+
+.detail-form__button-group {
     text-align: right;
-    margin-top: 20px;
+    /* margin-top: 8px; */
+    padding: 20px 0;
+    background-color: rgb(237, 235, 235);
+    margin: 0 -50px -10px -50px;
 }
 
 .detail-form__button {
@@ -90,4 +106,5 @@ body {
     font-size: 17px;
     display: inline-block;
     padding: 8px 12px;
+   
 }
