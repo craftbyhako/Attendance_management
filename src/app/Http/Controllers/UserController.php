@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Attendance;
+use App\Models\UpdatedAttendance;
+use App\Models\ApproveStatus;
 use App\Http\Requests\DetailRequest;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+
 
 class UserController extends Controller
 {
@@ -204,6 +207,8 @@ class UserController extends Controller
         $user = Auth::user();
         
         $attendance = Attendance::find($id);
+
+        $isLocked = $attendance->is_editable === false;
         
         $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
         ->locale('ja')
@@ -216,7 +221,7 @@ class UserController extends Controller
         $break2_start = $attendance->break2_start ? Carbon::parse($attendance->break2_start)->format('H:i') : '';
         $break2_end = $attendance->break2_end ? Carbon::parse($attendance->break2_end)->format('H:i') : '';
          
-        return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end'));
+        return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
     }
 
     public function updateDetail(DetailRequest $request, $id) 
@@ -227,11 +232,6 @@ class UserController extends Controller
         $user = Auth::user();
 
         $attendance = Attendance::find($id);
-        if (!$attendance) {
-            Log::error("Attendance not found: $id");
-        } else {
-            Log::debug("Attendance found: " . json_encode($attendance));
-        }
 
 
         $attendance->clock_in = $request->input('clock_in');
@@ -243,8 +243,46 @@ class UserController extends Controller
         $attendance->note = $request->input('note');
 
         $attendance->save();
-        Log::debug("Attendance after save: " . json_encode($attendance));
+        
+    // 修正後の処理
+        // １　承認待ちステータスを取得
+        $pendingAttendance = ApproveStatus::where('status', '承認待ち')->first();
 
-        return redirect('/attendance')->with('success', '詳細情報を更新しました');
+        // ２　修正申請を保存
+        $updatedAttendance = new UpdatedAttendance();
+        $updatedAttendance->user_id = $user->id;
+        $updatedAttendance->attendance_id = $id;
+        $updatedAttendance->approve_status_id =             $pendingAttendance->id ?? 1;
+        $updatedAttendance->update_date = now();
+        $updatedAttendance->note = $request->input('note');
+        $updatedAttendance->created_at = now();
+        $updatedAttendance->updated_at = now();
+        $updatedAttendance->save();
+
+        Log::debug("UpdatedAttendance saved: " . json_encode($updatedAttendance));
+
+        // ３　編集不可状態にする
+        $attendance = Attendance::find($id);
+        $attendance->is_editable = false;
+        $attendance->save();
+        
+        return redirect()->route('user.indexUpdated');
+    }
+
+    public function indexUpdated ()
+    {
+        $user = Auth::user();
+        
+        // 申請履歴を取得
+        $requests = UpdatedAttendance::with(['attendance', 'approveStatus'])
+            ->where('user_id', $user->id)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        // $pendingAttendance = 
+
+        // $updatedAttendance = 
+
+        return view('user.updated-attendance', compact('requests'));
     }
 }

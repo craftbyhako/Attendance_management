@@ -14,4 +14,9 @@ class ApproveStatus extends Model
     protected $fillable = [
         'status',
     ];
+
+    public function updatedAttendance()
+    {
+        return $this->hasMany(UpdatedAttendance::class);
+    }
 }

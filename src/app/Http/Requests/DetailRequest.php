@@ -17,10 +17,6 @@ class DetailRequest extends FormRequest
     {
         $isDetailUpdate = $this->routeIs('user.updateDetail');
 
-        Log::debug('request data: ' . json_encode($this->all()));
-        Log::debug('isDetailUpdate: ' . ($isDetailUpdate ? 'true' : 'false'));
-
-
         return [
             'clock_in' => ['required', 'date_format:H:i','before:clock_out'],
             

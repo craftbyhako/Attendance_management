@@ -32,5 +32,10 @@ class Attendance extends Model
     {
         return $this->belongsTo(AttendanceStatus::class);
     }
+
+    public function updatedAttendance()
+    {
+        return $this->hasMany(UpdatedAttendance::class);
+    }
 }
 

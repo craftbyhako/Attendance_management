@@ -9,8 +9,8 @@
     <h1 class="page-title">申請一覧</h1>
     <div class="tab">
         <ul class="tab__list">
-            <li><a href="{{ route(approval.index), 'tab' => 'request') }}">申請一覧</a></li>
-            <li><a href="{{ route(approval.index), 'tab' => 'approve' }}">承認一覧</a></li>
+            <li><a href="{{ route('user.indexUpdated', ['tab' => 'pending']) }}">承認待ち</a></li>
+            <li><a href="{{ route('user.indexUpdated', ['tab' => 'updated']) }}">承認済み</a></li>
         </ul>
     </div>
 
@@ -28,15 +28,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @foreach( $requests as $request)
-                        <td>{{ $attendance_status }}</td>
-                        <td>{{ $user_name }}</td>
-                        <td>{{ $target_date }}</td>
-                        <td>{{ $note }}</td>
-                        <td>{{ $update_date }}</td>
-                        <td><a href="">詳細</a></td>
-                    </tr>
+                    @foreach( $requests as $request)
+                        <tr>
+                            <td>{{ $attendance_status }}</td>
+                            <td>{{ $user_name }}</td>
+                            <td>{{ $target_date }}</td>
+                            <td>{{ $note }}</td>
+                            <td>{{ $update_date }}</td>
+                            <td><a href="">詳細</a></td>
+                        </tr>
+                    @endforeach
                 </tbody>
                 
             

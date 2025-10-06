@@ -35,5 +35,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/attendance/detail/{id}', [UserController::class, 'showDetail'])->name('user.showDetail');
 
     Route::patch('/attendance/detail/{id}', [UserController::class, 'updateDetail'])->name('user.updateDetail');
+
+    Route::get('/stamp_correction_request/list', [UserController::class, 'indexUpdated'])->name('user.indexUpdated');
 });
 

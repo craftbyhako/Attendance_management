@@ -17,4 +17,19 @@ class UpdatedAttendance extends Model
         'update_date',
         'note',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function attendance()
+    {
+        return $this->belongsTo(Attendance::class);
+    }
+    
+    public function approveStatus()
+    {
+        return $this->belongsTo(ApproveStatus::class);
+    }
 }
