@@ -20,6 +20,7 @@ class Attendance extends Model
         'break1_end',
         'break2_start',
         'break2_end',
+        'note',
     ];
 
     public function user() 

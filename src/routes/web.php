@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/attendance', [UserController::class, 'create'])
-        ->name('attendance.create');
+        ->name('user.create');
 
     Route::post('/attendance', [UserController::class, 'store'])->name('user.store');
 

@@ -7,6 +7,7 @@ use App\Models\Attendance;
 use App\Http\Requests\DetailRequest;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -26,13 +27,12 @@ class UserController extends Controller
         if (!$attendance) 
         {
             $attendance = new Attendance ([
+                'user_id' => auth()->id(),
                 'attendance_status_id' => 1, 
                 'year_month' => $todayYearMonth,
                 'day' => $todayDay,
             ]);
         }
-
-        // dd($attendance->attendance_status_id);
 
         switch ($attendance->attendance_status_id) {
             case 1:
@@ -66,10 +66,8 @@ class UserController extends Controller
         return view('user.create-attendance', compact('attendance', 'statusLabel', 'breakAction'));
     }
 
-    public function store(DetailRequest $request)
+    public function store(Request $request)
     {
-        // dd($request->all(), Auth::id());
-        
         $action = $request->input('action');
         $user = Auth::user();
 
@@ -92,10 +90,12 @@ class UserController extends Controller
             return redirect()->back()->with('error', '今日の勤怠レコードがありません');
         }
 
+        // dd($todayAttendance->toArray());
+
         switch($action) {
             // 出勤処理
             case 'clock_in' :
-                if(!$todayAttendance->clock_in) {
+                if (is_null($todayAttendance->clock_in)) {
                     $todayAttendance->update([
                         'attendance_status_id' => 2,
                         'clock_in' => now(),
@@ -130,7 +130,7 @@ class UserController extends Controller
             break;
         }
 
-        return redirect()->back();
+        return redirect()->route('user.create');
     }
 
     public function index(Request $request)
@@ -221,8 +221,18 @@ class UserController extends Controller
 
     public function updateDetail(DetailRequest $request, $id) 
     {
+
+        // dd($request->all());
+
         $user = Auth::user();
+
         $attendance = Attendance::find($id);
+        if (!$attendance) {
+            Log::error("Attendance not found: $id");
+        } else {
+            Log::debug("Attendance found: " . json_encode($attendance));
+        }
+
 
         $attendance->clock_in = $request->input('clock_in');
         $attendance->clock_out = $request->input('clock_out');
@@ -231,8 +241,10 @@ class UserController extends Controller
         $attendance->break2_start = $request->input('break2_start');
         $attendance->break2_end = $request->input('break2_end');
         $attendance->note = $request->input('note');
-        $attendance->save(); 
-        
+
+        $attendance->save();
+        Log::debug("Attendance after save: " . json_encode($attendance));
+
         return redirect('/attendance')->with('success', '詳細情報を更新しました');
     }
 }

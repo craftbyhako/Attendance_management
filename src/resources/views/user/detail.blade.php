@@ -50,6 +50,14 @@
                 <input class="detail-form__input" type="time" name="break1_start" value="{{ $break1_start ?? '' }}">
                 <span>～</span>
                 <input class="detail-form__input" type="time" name="break1_end" value="{{ $break1_end ?? '' }}">
+                <div class="error-messages">
+                @error('break1_start') 
+                    {{ $message }}
+                @enderror
+                @error('break1_end')
+                    {{ $message }}
+                @enderror
+                </div>
             </div>
 
 <!-- 休憩２（表示と修正） -->
@@ -58,12 +66,19 @@
                 <input class="detail-form__input" type="time" name="break2_start" value="{{ $break2_start ?? '' }}">
                 <span>～</span>
                 <input class="detail-form__input" type="time" name="break2_end" value="{{ $break2_end ?? '' }}">
+                @error('break2_start') 
+                    {{ $message }}
+                @enderror
+                @error('break2_end')
+                    {{ $message }}
+                @enderror
+                </div>
             </div>
 
 <!-- 備考（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label">備考</p>
-                <textarea class="detail-form__textarea" name="note">{{ $attendance->note }}</textarea>
+                <textarea class="detail-form__textarea" name="note">{{ old('note', $attendance->note ?? '') }}</textarea>
                 <div class="error-messages">
                     @error('note')
                         {{ $message }}
