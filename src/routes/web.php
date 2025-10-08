@@ -50,4 +50,12 @@ Route::get('/admin/login', function () {
 Route::middleware(['auth'])->group(function() {
     Route::get('/admin/attendances', [AdminController::class, 'index'])->name('admin.index');
 
+    Route::post('/logout', function (Request $request) {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/admin/login'); // ログアウト後は login
+    })->name('logout');
+
 });

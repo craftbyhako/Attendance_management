@@ -64,9 +64,10 @@ body {
     width: 150px;
     height:30px;
     font-size: 17px;
-    padding: 3px auto;
-    align-items: center;
-    gap: 15px;
+    padding: 3px;
+    /* align-items: center;
+    gap: 15px; */
+    box-sizing: border-box;
 }
 
 .detail-form__input::-webkit-calendar-picker-indicator {

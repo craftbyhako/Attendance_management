@@ -1,15 +1,16 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/updated-attendance.css')}}">
+<link rel="stylesheet" href="{{ asset('css/user/updated-attendance.css')}}">
 @endsection
 
 @section('content')
-<div class="content">
+<div class="container">
     <h1 class="page-title">申請一覧</h1>
     <div class="tab">
         <ul class="tab__list">
-            <li><a href="/stamp_correction_request/list?page=pending">承認待ち</a></li>
+            <li>
+                <a href="/stamp_correction_request/list?page=pending">承認待ち</a></li>
             <li><a href="/stamp_correction_request/list?page=updated">承認済み</a></li>
         </ul>
     </div>
@@ -28,24 +29,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach( $requests as $request)
-                        @if ($request->approve_status_id === 1)
+                    @foreach( $requests as $updatedRequest)
+                        @if ($updatedRequest->approve_status_id === 1)
                         <tr class="tab__index--pending">
-                            <td>{{ $request->approveStatus->status ?? '' }}</td>
-                            <td>{{ $request->user->user_name ?? '' }}</td>
-                            <td>{{ $request->attendance->year_month ?? '' }}-{{ $request->attendance->day ?? '' }}</td>
-                            <td>{{ $request->attendance->note ?? '' }}</td>
-                            <td>{{ $request->created_at->format('Y-m-d') }}</td>
-                            <td><a href="{{ route('user.showDetail', ['id' => $request->attendance_id]) }}">詳細</a></td>
+                            <td>{{ $updatedRequest->approveStatus->status ?? '' }}</td>
+                            <td>{{ $updatedRequest->user->user_name ?? '' }}</td>
+                            <td>{{ $updatedRequest->attendance->year_month ?? '' }}-{{ $updatedRequest->attendance->day ?? '' }}</td>
+                            <td>{{ $updatedRequest->attendance->note ?? '' }}</td>
+                            <td>{{ $updatedRequest->created_at->format('Y-m-d') }}</td>
+                            <td><a href="{{ route('user.showDetail', ['id' => $updatedRequest->attendance_id]) }}">詳細</a></td>
                         </tr>
                     @else
                         <tr class="tab__index--updated">
-                            <td>{{ $request->approveStatus->status ?? '' }}</td>
-                            <td>{{ $request->user->user_name ?? '' }}</td>
-                            <td>{{ $request->attendance->year_month ?? '' }}-{{ $request->attendance->day ?? '' }}</td>
-                            <td>{{ $request->attendance->note ?? '' }}</td>
-                            <td>{{ $request->created_at->format('Y-m-d') }}</td>
-                            <td><a href="{{ route('user.showDetail', ['id' => $request->attendance_id]) }}">詳細</a></td>
+                            <td>{{ $updatedRequest->approveStatus->status ?? '' }}</td>
+                            <td>{{ $updatedRequest->user->user_name ?? '' }}</td>
+                            <td>{{ $updatedRequest->attendance->year_month ?? '' }}-{{ $updatedRequest->attendance->day ?? '' }}</td>
+                            <td>{{ $updatedRequest->attendance->note ?? '' }}</td>
+                            <td>{{ $updatedRequest->created_at->format('Y-m-d') }}</td>
+                            <td><a href="{{ route('user.showDetail', ['id' => $updatedRequest->attendance_id]) }}">詳細</a></td>
                         </tr>   
                         @endif           
                     @endforeach

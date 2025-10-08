@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin-app')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/user/index.css')}}">
@@ -10,7 +10,7 @@
     <div class="index__table"></div>
         <div class="index__group--target">
             <!-- 前日リンク -->
-            <a href="{{ route('user.index', ['day' => $prev_day]) }}"><img src="{{ asset('storage/img/left_arrow.png') }}" alt="">　前日</a>
+            <a href="{{ route('admin.index', ['day' => $prev_day]) }}"><img src="{{ asset('storage/img/left_arrow.png') }}" alt="">　前日</a>
         
             <!-- 当日（デフォルト） -->
             <div class="center-day">
@@ -19,7 +19,7 @@
             </div>
 
             <!-- 次日リンク -->
-            <a href="{{ route('user.index', ['day' => $next_day]) }}">翌日　<img src="{{ asset('storage/img/right_arrow.png') }}" alt=""></a>
+            <a href="{{ route('admin.index', ['day' => $next_day]) }}">翌日　<img src="{{ asset('storage/img/right_arrow.png') }}" alt=""></a>
         </div>
 
         <div class="index__group--table">

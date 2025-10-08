@@ -70,17 +70,30 @@ class AdminController extends Controller
             return $attendance;
         });
 
-            // dd($attendances->pluck('user_id', 'day'));
-        // dd([
-        // 'target_year_month' => $target_year_month,
-        // 'target_day_only' => $target_day_only,
-        // 'attendances_count' => $attendances->count()
-        // ]);
-
         $carbonDay = Carbon::parse($target_day);
         $prev_day = $carbonDay->copy()->subDay()->format('Y-m-d');
         $next_day = $carbonDay->copy()->addDay()->format('Y-m-d');
 
         return view ('admin.index', compact('attendances', 'target_day','target_day_display', 'target_year_month', 'target_day_only','prev_day', 'next_day'));
+    }
+
+    public function showDetail($id) {
+        
+        $attendance = Attendance::find($id);
+
+        $isLocked = $attendance->is_editable === false;
+        
+        $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
+        ->locale('ja')
+        ->isoFormat('YYYY年M月D日');
+
+        $clock_in = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '';
+        $clock_out = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
+        $break1_start = $attendance->break1_start ? Carbon::parse($attendance->break1_start)->format('H:i') : '';
+        $break1_end = $attendance->break1_end ? Carbon::parse($attendance->break1_end)->format('H:i') : '';
+        $break2_start = $attendance->break2_start ? Carbon::parse($attendance->break2_start)->format('H:i') : '';
+        $break2_end = $attendance->break2_end ? Carbon::parse($attendance->break2_end)->format('H:i') : '';
+         
+        return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
     }
 }

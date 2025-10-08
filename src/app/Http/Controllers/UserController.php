@@ -204,6 +204,7 @@ class UserController extends Controller
 
     public function showDetail($id)
     {
+        // dd('showDetail called', $id);
         $user = Auth::user();
         
         $attendance = Attendance::find($id);
@@ -214,13 +215,19 @@ class UserController extends Controller
         ->locale('ja')
         ->isoFormat('YYYY年M月D日');
 
-        $clock_in = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '';
-        $clock_out = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
-        $break1_start = $attendance->break1_start ? Carbon::parse($attendance->break1_start)->format('H:i') : '';
-        $break1_end = $attendance->break1_end ? Carbon::parse($attendance->break1_end)->format('H:i') : '';
-        $break2_start = $attendance->break2_start ? Carbon::parse($attendance->break2_start)->format('H:i') : '';
-        $break2_end = $attendance->break2_end ? Carbon::parse($attendance->break2_end)->format('H:i') : '';
+        $clock_in = $attendance->clock_in ? trim(Carbon::parse($attendance->clock_in)->format('H:i')) : '';
+        $clock_out = $attendance->clock_out ? trim(Carbon::parse($attendance->clock_out)->format('H:i')) : '';
+        $break1_start = $attendance->break1_start ? trim(Carbon::parse($attendance->break1_start)->format('H:i')) : '';
+        $break1_end = $attendance->break1_end ? trim(Carbon::parse($attendance->break1_end)->format('H:i')) : '';
+        $break2_start = $attendance->break2_start ? trim(Carbon::parse($attendance->break2_start)->format('H:i')) : '';
+        $break2_end = $attendance->break2_end ? trim(Carbon::parse($attendance->break2_end)->format('H:i')) : '';
          
+        // dd($clock_out);
+        // dd([
+        // 'clock_out_from_db' => $attendance->clock_out,
+        // 'clock_out_parsed' => $clock_out,
+        // ]);
+
         return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
     }
 
@@ -269,16 +276,30 @@ class UserController extends Controller
         return redirect()->route('user.indexUpdated');
     }
 
-    public function indexUpdated ()
+    public function indexUpdated (Request $request)
     {
         $user = Auth::user();
         
-        // 申請履歴を取得
-        $requests = UpdatedAttendance::with(['attendance', 'approveStatus'])
-            ->where('user_id', $user->id)
-            ->orderBy('updated_at', 'desc')
-            ->get();
+        // クエリパラメータ ?page=pending or ?page=updated
+        $page = $request->query('page', 'pending'); // デフォルトは「承認待ち」
 
-        return view('user.updated-attendance', compact('requests'));
+        $query = UpdatedAttendance::with(['attendance', 'approveStatus'])
+        ->where('user_id', $user->id)
+        ->orderBy('updated_at', 'desc');
+
+    // ステータスによって絞り込み
+        if ($page === 'pending') {
+            $query->whereHas('approveStatus', function($q) {
+            $q->where('status', '承認待ち');
+            });
+        } elseif ($page === 'updated') {
+            $query->whereHas('approveStatus', function($q) {
+            $q->where('status', '承認済み');
+            });
+        }
+
+        $requests = $query->get();
+
+        return view('user.updated-attendance', compact('requests', 'page'));
     }
 }

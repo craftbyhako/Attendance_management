@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin-app')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/admin-login.css')}}">
@@ -20,7 +20,7 @@
 
         <label class="admin-login__label" for="password">パスワード</label>
         <input class="admin-login__input" type="password" id="password" name="password">
-        <div class="form-error">
+        <div class="form__error">
             @error('password')
                 {{ $message }}
             @enderror
