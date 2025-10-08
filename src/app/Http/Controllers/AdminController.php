@@ -8,30 +8,29 @@ use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Models\UpdatedAttendance;
 use App\Models\ApproveStatus;
+use App\Models\User;
 
 
 class AdminController extends Controller
 {
     public function index(Request $request)
-    {
-        $user = Auth::user();
-        
+    {        
         $target_day = $request->input('day', Carbon::now()->format('Y-m-d'));
         
+        $target_day_display = Carbon::parse($target_day)
+        ->locale('ja')
+        ->isoFormat('YYYY年MM月DD日');
+
+        $target_year_month = Carbon::parse($target_day)->format('Y-m');
+        $target_day_only = (int) Carbon::parse($target_day)->format('d');
+
         $attendances = Attendance::with('user')
-        ->where('day', $target_day)
-        ->select(
-            'id',
-            'user_id',
-            'year_month',
-            'day',
-            'clock_in',
-            'clock_out',
-            'break1_start',
-            'break1_end',
-            'break2_start',
-            'break2_end'
-        )
+        ->where('year_month', $target_year_month)
+        ->where('day', $target_day_only)
+        ->whereHas('user', function($query) {
+            $query->where('admin_role', 0)
+                ->orWhereNull('admin_role');
+        })
         ->get()
         ->map(function ($attendance) {
             // 秒なし表示
@@ -71,10 +70,17 @@ class AdminController extends Controller
             return $attendance;
         });
 
-        $carbonDay = Carbon::parse($target_day);
-        $prev_day = $carbonDay->copy()->subDay()->format('ddd');
-        $next_day = $carbonDay->copy()->addDay()->format('ddd');
+            // dd($attendances->pluck('user_id', 'day'));
+        // dd([
+        // 'target_year_month' => $target_year_month,
+        // 'target_day_only' => $target_day_only,
+        // 'attendances_count' => $attendances->count()
+        // ]);
 
-        return view ('admin.index', compact('attendances', 'target_day', 'prev_day', 'next_day'));
+        $carbonDay = Carbon::parse($target_day);
+        $prev_day = $carbonDay->copy()->subDay()->format('Y-m-d');
+        $next_day = $carbonDay->copy()->addDay()->format('Y-m-d');
+
+        return view ('admin.index', compact('attendances', 'target_day','target_day_display', 'target_year_month', 'target_day_only','prev_day', 'next_day'));
     }
 }

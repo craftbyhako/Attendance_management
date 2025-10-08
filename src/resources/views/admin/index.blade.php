@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="page-title">{{ $target_day }}の勤怠一覧</h1>
+    <h1 class="page-title">{{ $target_day_display }}の勤怠一覧</h1>
     <div class="index__table"></div>
         <div class="index__group--target">
             <!-- 前日リンク -->
