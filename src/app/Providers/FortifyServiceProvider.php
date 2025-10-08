@@ -17,6 +17,9 @@ use Laravel\Fortify\Http\Requests\LoginRequest as FortifyLoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Laravel\Fortify\Contracts\LoginResponse;
+use Illuminate\Validation\ValidationException;
+
 
 
 
@@ -47,6 +50,9 @@ class FortifyServiceProvider extends ServiceProvider
 
 
         Fortify::loginView(function () {
+            if (request()->is('admin/login')) {
+                return view('auth.admin-login');
+            }
             return view('auth.login');
         });
 
@@ -89,32 +95,6 @@ class FortifyServiceProvider extends ServiceProvider
             };
         });
 
-        // LoginRequest のバリデーションを実行する
-        // Fortify::authenticateUsing(function ($request) {
-        //     $request->validate(); 
-        
-        //     $user = Auth::getProvider()->retrieveByCredentials([
-        //         'email' => $request->email,
-        //         'password' => $request->password,
-        //     ]);
-
-        //     if ($user && Auth::validate(['email' => $request->email, 'password' => $request->password])) {
-        //     return $user;
-        //     }
-
-        //     return null;
-        // });
-        // Fortify::authenticateUsing(function ($request) {
-        //     $customRequest = CustomLoginRequest::createFrom($request->toArray());
-        //     $customRequest->validate();
-            
-        //     $user = User::where('email', $request->email)->first();
-
-        //     if ($user && Hash::check($request->password, $user->password)) {
-            
-        //     return $user;
-        //     }
-        // });
 
         Fortify::authenticateUsing(function (LoginRequest $request) {
             
@@ -122,12 +102,34 @@ class FortifyServiceProvider extends ServiceProvider
             // ユーザーを検索
             $user = User::where('email', $request->email)->first();
 
-            // パスワードを確認
+            // ユーザーデータ、パスワードを確認
             if (!$user || !Hash::check($request->password, $user->password)) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
                     'email' => ['ログイン情報が登録されていません'],       
                 ]);
             }
+
+             // 管理者ページの場合、admin_role が 1 でなければログイン不可
+            if (request()->is('admin/*') && $user->admin_role != 1) {
+                throw ValidationException::withMessages([
+                'email' => ['ログイン情報が登録されていません'],
+                ]);
+            }
+
+            // 現在アクセスしているURLで判定
+            // if (request()->is('admin/*')) {
+            //     if ($user->admin_role != 1){
+            //         throw ValidationException::withMessages([
+            //         'email' => ['管理者専用のログインです'],
+            //         ]);
+            //     }
+            // } else {
+            //     if ($user->admin_role != 0 ){
+            //         throw ValidationException::withMessages([
+            //             'email' => ['一般ユーザー専用のログインです'],
+            //         ]);
+            //     }
+            // }
             return $user;
         });
 
@@ -137,5 +139,17 @@ class FortifyServiceProvider extends ServiceProvider
             LoginRequest::class
         );
 
+        // ログイン後のリダイレクト先を分岐
+        $this->app->singleton(LoginResponse::class, function() {
+            return new class implements LoginResponse {
+                public function toResponse ($request)
+                {
+                    if (auth()->user()->admin_role == 1) {
+                        return redirect()->route('admin.index');
+                    }    
+                    return redirect()->route('user.create');
+                }
+            };
+        });
     }
 }

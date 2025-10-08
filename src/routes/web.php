@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,3 +40,14 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/stamp_correction_request/list', [UserController::class, 'indexUpdated'])->name('user.indexUpdated');
 });
 
+
+// 管理者ログイン画面の表示
+Route::get('/admin/login', function () {
+    return view('auth.admin-login'); // ここで表示するBlade
+})->name('admin.login');
+
+// 管理者ログイン後のルート
+Route::middleware(['auth'])->group(function() {
+    Route::get('/admin/attendances', [AdminController::class, 'index'])->name('admin.index');
+
+});

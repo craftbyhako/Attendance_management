@@ -279,10 +279,6 @@ class UserController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        // $pendingAttendance = 
-
-        // $updatedAttendance = 
-
         return view('user.updated-attendance', compact('requests'));
     }
 }

@@ -8,7 +8,7 @@
 <div class="content">
     <form class="admin-login" action="/login" method="POST">
         @csrf
-        <h1 class="page-title">ログイン</h1>
+        <h1 class="page-title">管理者ログイン</h1>
 
         <label class="admin-login__label" for="email">メールアドレス</label>
         <input class="admin-login__input" type="email" id="email" name="email" value="{{ old('email' )}}">
@@ -26,9 +26,7 @@
             @enderror
         </div>
 
-        <button class="admin-login__button">ログインする</button>
-
-        <a class="admin-login__link" href="/register">会員登録はこちら</a>
+        <button class="admin-login__button">管理者ログインする</button>
     </form>
 </div>
 @endsection

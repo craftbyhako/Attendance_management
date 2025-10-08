@@ -32,8 +32,6 @@ class UsersTableSeeder extends Seeder
             'admin_role' => 1,
         ];
         DB::table('users')->insert($param);
-        
-
 
     }
 }
