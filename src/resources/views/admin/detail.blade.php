@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+
+
 <div class="container">
     <h1 class="page-title">勤怠詳細</h1>
 
@@ -33,7 +35,7 @@
                 <p class="detail-form__label" >出勤・退勤</p>
                 <input class="detail-form__input" type="time" name="clock_in" value="{{ old('clock_in', trim($clock_in)) }}" {{ $isLocked ? 'disabled' : '' }}>
                 <span>～</span>
-                <input class="detail-form__input" type="time" name="clock_out" value="{{ old('clock_out', trim($clock_out)) }}" {{ $isLocked ? 'disabled' : '' }}>
+                <input class="detail-form__input" type="time" name="clock_out" value="{{ trim(old('clock_out', $clock_out ?? '')) }}" {{ $isLocked ? 'disabled' : '' }}>
                 <div class="error-messages">
                 @error('clock_in') 
                     {{ $message }}
@@ -78,7 +80,7 @@
 <!-- 備考（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label">備考</p>
-                <textarea class="detail-form__textarea" name="note" {{ $isLocked ? 'readonly' : '' }}> {{ old('note', $attendance->note ?? '') }}</textarea>
+                <textarea class="detail-form__textarea" name="note" {{ $isLocked ? 'readonly' : '' }}>{{ old('note', $attendance->note ?? '') }}</textarea>
                 <div class="error-messages">
                     @error('note')
                         {{ $message }}

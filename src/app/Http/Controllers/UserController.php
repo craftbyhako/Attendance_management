@@ -209,6 +209,10 @@ class UserController extends Controller
         
         $attendance = Attendance::find($id);
 
+        // 修正ボタン押下時にロック
+        $attendance->is_editable = false;
+        $attendance->save();
+
         $isLocked = $attendance->is_editable === false;
         
         $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
@@ -216,17 +220,26 @@ class UserController extends Controller
         ->isoFormat('YYYY年M月D日');
 
         $clock_in = $attendance->clock_in ? trim(Carbon::parse($attendance->clock_in)->format('H:i')) : '';
-        $clock_out = $attendance->clock_out ? trim(Carbon::parse($attendance->clock_out)->format('H:i')) : '';
+        $clock_out = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
         $break1_start = $attendance->break1_start ? trim(Carbon::parse($attendance->break1_start)->format('H:i')) : '';
         $break1_end = $attendance->break1_end ? trim(Carbon::parse($attendance->break1_end)->format('H:i')) : '';
         $break2_start = $attendance->break2_start ? trim(Carbon::parse($attendance->break2_start)->format('H:i')) : '';
         $break2_end = $attendance->break2_end ? trim(Carbon::parse($attendance->break2_end)->format('H:i')) : '';
          
-        // dd($clock_out);
+        // dd([
+        // 'raw' => $attendance->clock_out,
+        // 'trimmed' => trim($attendance->clock_out),
+        // 'formatted' => Carbon::parse($attendance->clock_out)->format('H:i'),
+        // ]);
+
+
         // dd([
         // 'clock_out_from_db' => $attendance->clock_out,
         // 'clock_out_parsed' => $clock_out,
         // ]);
+
+        
+
 
         return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
     }

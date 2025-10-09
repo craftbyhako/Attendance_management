@@ -79,7 +79,7 @@ class AdminController extends Controller
 
     public function showDetail($id) {
         
-        $attendance = Attendance::find($id);
+        $attendance = Attendance::with('user')->findOrFail($id);
 
         $isLocked = $attendance->is_editable === false;
         
@@ -88,12 +88,12 @@ class AdminController extends Controller
         ->isoFormat('YYYY年M月D日');
 
         $clock_in = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '';
-        $clock_out = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
+        $clock_out = $attendance->clock_out ? trim(Carbon::parse(trim($attendance->clock_out))->format('H:i')) : '';
         $break1_start = $attendance->break1_start ? Carbon::parse($attendance->break1_start)->format('H:i') : '';
         $break1_end = $attendance->break1_end ? Carbon::parse($attendance->break1_end)->format('H:i') : '';
         $break2_start = $attendance->break2_start ? Carbon::parse($attendance->break2_start)->format('H:i') : '';
         $break2_end = $attendance->break2_end ? Carbon::parse($attendance->break2_end)->format('H:i') : '';
          
-        return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
+        return view('admin.detail', compact('attendance','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
     }
 }

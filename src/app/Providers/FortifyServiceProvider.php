@@ -108,28 +108,6 @@ class FortifyServiceProvider extends ServiceProvider
                     'email' => ['ログイン情報が登録されていません'],       
                 ]);
             }
-
-             // 管理者ページの場合、admin_role が 1 でなければログイン不可
-            if (request()->is('admin/*') && $user->admin_role != 1) {
-                throw ValidationException::withMessages([
-                'email' => ['ログイン情報が登録されていません'],
-                ]);
-            }
-
-            // 現在アクセスしているURLで判定
-            // if (request()->is('admin/*')) {
-            //     if ($user->admin_role != 1){
-            //         throw ValidationException::withMessages([
-            //         'email' => ['管理者専用のログインです'],
-            //         ]);
-            //     }
-            // } else {
-            //     if ($user->admin_role != 0 ){
-            //         throw ValidationException::withMessages([
-            //             'email' => ['一般ユーザー専用のログインです'],
-            //         ]);
-            //     }
-            // }
             return $user;
         });
 
@@ -151,5 +129,6 @@ class FortifyServiceProvider extends ServiceProvider
                 }
             };
         });
+
     }
 }

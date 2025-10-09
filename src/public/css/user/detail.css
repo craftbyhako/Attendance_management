@@ -34,18 +34,42 @@ body {
 }
 
 .detail-form__item {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    margin-top: 10px;
     border-bottom: 2px rgb(237, 235, 235) solid;
     display: flex;
     text-align: left;
     height: 60px;
     gap: 60px;
-    align-items: center;
+    align-items: flex-start;
     padding-bottom: 10px;
     margin-left: -40px;
         /* 親 padding と同じ値を負にする */
     margin-right: -40px;
     
+}
+
+.detail-form__item>input,
+.detail-form__item>span {
+    margin-right: 10px;
+    /* 入力同士の横間隔 */
+    display: inline-block;
+        /* 入力と ～ を横並びに */
+}
+
+.time-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    /* 入力とエラーを縦に積む */
+    width: 100%;
+}
+
+.time-input-row {
+    display: flex;
+    align-items: center;
+    /* 高さを揃える */
+    gap: 10px;
+    /* 入力と ~ の間隔 */
 }
 
 .detail-form__item:last-child {
@@ -89,6 +113,19 @@ body {
 .error-messages {
     font-size: 12px;
     color: red;
+    margin-top: 3px;
+        /* 入力との間隔 */
+}
+
+.locked-wrapper {
+    width: 100%;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.locked-message {
+    color: red;
+    display: inline-block;
 }
 
 .detail-form__button-group {

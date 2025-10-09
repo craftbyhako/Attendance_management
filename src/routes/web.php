@@ -18,18 +18,10 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::middleware(['auth'])->group(function() {
-    Route::get('/attendance', [UserController::class, 'create'])
-        ->name('user.create');
+    // 一般ユーザ用ルート
+    Route::get('/attendance', [UserController::class, 'create'])->name('user.create');
 
     Route::post('/attendance', [UserController::class, 'store'])->name('user.store');
-
-    Route::post('/logout', function (Request $request) {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/login'); // ログアウト後は login
-    })->name('logout');
 
     Route::get('/attendance/list', [UserController::class, 'index'])->name('user.index');
 
@@ -38,24 +30,32 @@ Route::middleware(['auth'])->group(function() {
     Route::patch('/attendance/detail/{id}', [UserController::class, 'updateDetail'])->name('user.updateDetail');
 
     Route::get('/stamp_correction_request/list', [UserController::class, 'indexUpdated'])->name('user.indexUpdated');
+    
+
+        // 管理者ログイン後
+        Route::get('/admin/attendances', [AdminController::class, 'index'])->name('admin.index');
+
+        Route::get('/admin/attendances/{id}', [AdminController::class, 'showDetail'])->name('admin.showDetail');
+
+        Route::patch('/admin/attendances/{id}', [AdminController::class, 'updateDetail'])->name('admin.updateDetail');
 });
+
+// 共通ログアウト
+Route::post('/logout', function (Request $request) {
+    $isAdmin = Auth::check() && Auth::user()->admin_role;
+        
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    if($isAdmin) {
+        return redirect('/admin/login');
+    }
+    return redirect('/login');
+})->name('logout');
 
 
 // 管理者ログイン画面の表示
 Route::get('/admin/login', function () {
     return view('auth.admin-login'); // ここで表示するBlade
 })->name('admin.login');
-
-// 管理者ログイン後のルート
-Route::middleware(['auth'])->group(function() {
-    Route::get('/admin/attendances', [AdminController::class, 'index'])->name('admin.index');
-
-    Route::post('/logout', function (Request $request) {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/admin/login'); // ログアウト後は login
-    })->name('logout');
-
-});
