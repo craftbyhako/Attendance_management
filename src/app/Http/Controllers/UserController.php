@@ -204,17 +204,17 @@ class UserController extends Controller
 
     public function showDetail($id)
     {
-        // dd('showDetail called', $id);
         $user = Auth::user();
         
         $attendance = Attendance::find($id);
 
-        // 修正ボタン押下時にロック
-        $attendance->is_editable = false;
-        $attendance->save();
-
-        $isLocked = $attendance->is_editable === false;
+         // 存在しなければ 404
+        if (!$attendance) {
+            abort(404, '勤怠情報が存在しません');
+    }
         
+        $isLocked = (bool)$attendance->is_editable === false;
+
         $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
         ->locale('ja')
         ->isoFormat('YYYY年M月D日');
@@ -225,35 +225,17 @@ class UserController extends Controller
         $break1_end = $attendance->break1_end ? trim(Carbon::parse($attendance->break1_end)->format('H:i')) : '';
         $break2_start = $attendance->break2_start ? trim(Carbon::parse($attendance->break2_start)->format('H:i')) : '';
         $break2_end = $attendance->break2_end ? trim(Carbon::parse($attendance->break2_end)->format('H:i')) : '';
-         
-        // dd([
-        // 'raw' => $attendance->clock_out,
-        // 'trimmed' => trim($attendance->clock_out),
-        // 'formatted' => Carbon::parse($attendance->clock_out)->format('H:i'),
-        // ]);
-
-
-        // dd([
-        // 'clock_out_from_db' => $attendance->clock_out,
-        // 'clock_out_parsed' => $clock_out,
-        // ]);
-
-        
-
 
         return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
     }
 
     public function updateDetail(DetailRequest $request, $id) 
     {
-
-        // dd($request->all());
-
         $user = Auth::user();
 
         $attendance = Attendance::find($id);
 
-
+        //１ フォームの内容をセット
         $attendance->clock_in = $request->input('clock_in');
         $attendance->clock_out = $request->input('clock_out');
         $attendance->break1_start = $request->input('break1_start');
@@ -262,31 +244,29 @@ class UserController extends Controller
         $attendance->break2_end = $request->input('break2_end');
         $attendance->note = $request->input('note');
 
+        // ２　編集不可状態にする
+        $attendance->is_editable = false;
+
+        // ３　Attendanceを上書き
         $attendance->save();
+        \Log::debug('is_editable after save: '.$attendance->is_editable);
+
         
-    // 修正後の処理
-        // １　承認待ちステータスを取得
+
+        // ４　修正申請を作る
+        // ４ー１　承認待ちステータスを取得
         $pendingAttendance = ApproveStatus::where('status', '承認待ち')->first();
 
-        // ２　修正申請を保存
+        // ４－２　修正申請を登録
         $updatedAttendance = new UpdatedAttendance();
         $updatedAttendance->user_id = $user->id;
         $updatedAttendance->attendance_id = $id;
         $updatedAttendance->approve_status_id =             $pendingAttendance->id ?? 1;
         $updatedAttendance->update_date = now();
         $updatedAttendance->note = $request->input('note');
-        $updatedAttendance->created_at = now();
-        $updatedAttendance->updated_at = now();
         $updatedAttendance->save();
-
-        Log::debug("UpdatedAttendance saved: " . json_encode($updatedAttendance));
-
-        // ３　編集不可状態にする
-        $attendance = Attendance::find($id);
-        $attendance->is_editable = false;
-        $attendance->save();
         
-        return redirect()->route('user.indexUpdated');
+        return redirect()->route('user.showDetail', ['id' => $id]);
     }
 
     public function indexUpdated (Request $request)

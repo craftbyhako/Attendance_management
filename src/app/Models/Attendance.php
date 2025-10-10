@@ -23,6 +23,10 @@ class Attendance extends Model
         'note',
     ];
 
+    protected $casts = [
+        'is_editable' => 'boolean',
+    ];
+
     public function user() 
     {
         return $this->belongsTo(User::class);

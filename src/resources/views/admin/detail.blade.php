@@ -33,9 +33,9 @@
 <!-- 出勤・退勤時間（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label" >出勤・退勤</p>
-                <input class="detail-form__input" type="time" name="clock_in" value="{{ old('clock_in', trim($clock_in)) }}" {{ $isLocked ? 'disabled' : '' }}>
+                <input class="detail-form__input" type="time" name="clock_in" value="{{ old('clock_in', trim($clock_in)) }}" {{ $isLocked ? 'readonly' : '' }}>
                 <span>～</span>
-                <input class="detail-form__input" type="time" name="clock_out" value="{{ trim(old('clock_out', $clock_out ?? '')) }}" {{ $isLocked ? 'disabled' : '' }}>
+                <input class="detail-form__input" type="time" name="clock_out" value="{{ trim(old('clock_out', $clock_out ?? '')) }}" {{ $isLocked ? 'readonly' : '' }}>
                 <div class="error-messages">
                 @error('clock_in') 
                     {{ $message }}
@@ -49,9 +49,9 @@
 <!-- 休憩１（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label">休憩</p>
-                <input class="detail-form__input" type="time" name="break1_start" value="{{ old('break1_start', trim($break1_start)) }}" {{ $isLocked ? 'disabled' : '' }}>
+                <input class="detail-form__input" type="time" name="break1_start" value="{{ old('break1_start', trim($break1_start)) }}" {{ $isLocked ? 'readonly' : '' }}>
                 <span>～</span>
-                <input class="detail-form__input" type="time" name="break1_end" value="{{ old('break1_end', trim($break1_end)) }}" {{ $isLocked ? 'disabled' : '' }}>
+                <input class="detail-form__input" type="time" name="break1_end" value="{{ old('break1_end', trim($break1_end)) }}" {{ $isLocked ? 'readonly' : '' }}>
                 <div class="error-messages">
                 @error('break1_start') 
                     {{ $message }}
@@ -65,9 +65,9 @@
 <!-- 休憩２（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label">休憩２</p>
-                <input class="detail-form__input" type="time" name="break2_start" value="{{ old('break2_start', trim($break2_start)) }}" {{ $isLocked ? 'disabled' : '' }}>
+                <input class="detail-form__input" type="time" name="break2_start" value="{{ old('break2_start', trim($break2_start)) }}" {{ $isLocked ? 'readonly' : '' }}>
                 <span>～</span>
-                <input class="detail-form__input" type="time" name="break2_end" value="{{ old('break2_end', trim($break2_end)) }}" {{ $isLocked ? 'disabled' : '' }}>
+                <input class="detail-form__input" type="time" name="break2_end" value="{{ old('break2_end', trim($break2_end)) }}" {{ $isLocked ? 'readonly' : '' }}>
                 @error('break2_start') 
                     {{ $message }}
                 @enderror

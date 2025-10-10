@@ -74,7 +74,7 @@ class AdminController extends Controller
         $prev_day = $carbonDay->copy()->subDay()->format('Y-m-d');
         $next_day = $carbonDay->copy()->addDay()->format('Y-m-d');
 
-        return view ('admin.index', compact('attendances', 'target_day','target_day_display', 'target_year_month', 'target_day_only','prev_day', 'next_day'));
+        return view ('admin.stamp', compact('attendances', 'target_day','target_day_display', 'target_year_month', 'target_day_only','prev_day', 'next_day'));
     }
 
     public function showDetail($id) {

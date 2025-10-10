@@ -34,9 +34,9 @@
 
                 <div class="time-input-wrapper">
                     <div class="time-input-row">
-                        <input class="detail-form__input" type="time" name="clock_in" value="{{ old('clock_in', $clock_in ?? '') }}" {{ $isLocked ? 'disabled' : '' }}>             
+                        <input class="detail-form__input" type="time" name="clock_in" value="{{ old('clock_in', $clock_in ?? '') }}" {{ $isLocked ? 'readonly' : '' }}>             
                         <span>～</span>
-                        <input class="detail-form__input" type="time" name="clock_out" value="{{ old('clock_out', $clock_out ?? '') }}" {{ $isLocked ? 'disabled' : '' }}>
+                        <input class="detail-form__input" type="time" name="clock_out" value="{{ old('clock_out', $clock_out ?? '') }}" {{ $isLocked ? 'readonly' : '' }}>
                     </div>
                     <div class="error-messages">
                         @error('clock_in')
@@ -55,9 +55,9 @@
 
                 <div class="time-input-wrapper">
                     <div class="time-input-row">
-                        <input class="detail-form__input" type="time" name="break1_start" value="{{ old('break1_start', $break1_start ?? '') }}" {{ $isLocked ? 'disabled' : '' }}>
+                        <input class="detail-form__input" type="time" name="break1_start" value="{{ old('break1_start', $break1_start ?? '') }}" {{ $isLocked ? 'readonly' : '' }}>
                         <span>～</span>
-                        <input class="detail-form__input" type="time" name="break1_end" value="{{ old('break1_end', $break1_end ?? '') }}" {{ $isLocked ? 'disabled' : '' }}>
+                        <input class="detail-form__input" type="time" name="break1_end" value="{{ old('break1_end', $break1_end ?? '') }}" {{ $isLocked ? 'readonly' : '' }}>
                     </div>
                     <div class="error-messages">
                         @error('break1_start') 
@@ -76,9 +76,9 @@
 
                 <div class="time-input-wrapper">
                     <div class="time-input-row">
-                        <input class="detail-form__input" type="time" name="break2_start" value="{{ old('break2_start', $break2_start ?? '') }}" {{ $isLocked ? 'disabled' : '' }}>
+                        <input class="detail-form__input" type="time" name="break2_start" value="{{ old('break2_start', $break2_start ?? '') }}" {{ $isLocked ? 'readonly' : '' }}>
                         <span>～</span>
-                        <input class="detail-form__input" type="time" name="break2_end" value="{{ old('break2_end', $break2_end ?? '') }}" {{ $isLocked ? 'disabled' : '' }}>
+                        <input class="detail-form__input" type="time" name="break2_end" value="{{ old('break2_end', $break2_end ?? '') }}" {{ $isLocked ? 'readonly' : '' }}>
                     </div>
                     <div class="error-messages">
                         @error('break2_start') 

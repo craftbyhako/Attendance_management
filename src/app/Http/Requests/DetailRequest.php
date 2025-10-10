@@ -15,10 +15,11 @@ class DetailRequest extends FormRequest
 
     public function rules()
     {
-        $isDetailUpdate = $this->routeIs('user.updateDetail');
+        $isDetailUpdate = $this->route() && $this->route()->getActionName() === 'App\Http\Controllers\UserController@updateDetail';
+
 
         return [
-            'clock_in' => ['required', 'date_format:H:i','before:clock_out'],
+            'clock_in' => ['required', 'date_format:H:i'],
             
             'clock_out' => ['required', 'date_format:H:i', 'after:clock_in'],
             
@@ -37,7 +38,6 @@ class DetailRequest extends FormRequest
     public function messages() {
         return [
         'clock_in.required' => '出勤時間を入力してください',
-        'clock_in.before' => '出勤時間もしくは退勤時間が不適切な値です',
         'clock_out.required' => '退勤時間を入力してください',
         'clock_out.after' => '出勤時間もしくは退勤時間が不適切な値です',
         'break1_start.after_or_equal' => '休憩時間が不適切な値です',
