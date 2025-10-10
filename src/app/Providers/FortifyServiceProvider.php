@@ -85,17 +85,6 @@ class FortifyServiceProvider extends ServiceProvider
             };
         });
 
-         $this->app->singleton(LoginResponse::class, function () {
-            return new class implements LoginResponse 
-            {
-                public function toResponse($request)
-                {
-                    return redirect('/attendance');
-                } 
-            };
-        });
-
-
         Fortify::authenticateUsing(function (LoginRequest $request) {
             
             $request->validated();
