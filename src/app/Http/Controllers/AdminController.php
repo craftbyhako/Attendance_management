@@ -67,6 +67,7 @@ class AdminController extends Controller
             } else {
                 $attendance->totalWorkingTime = '';
             }
+
             return $attendance;
         });
 
@@ -77,11 +78,12 @@ class AdminController extends Controller
         return view ('admin.index', compact('attendances', 'target_day','target_day_display', 'target_year_month', 'target_day_only','prev_day', 'next_day'));
     }
 
-    public function showDetail($id) {
+    public function showDetail($id)
+    {
         
         $attendance = Attendance::with('user')->findOrFail($id);
 
-        $isLocked = $attendance->is_editable === false;
+        $isLocked = !(bool)$attendance->is_editable;
         
         $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
         ->locale('ja')
@@ -94,6 +96,69 @@ class AdminController extends Controller
         $break2_start = $attendance->break2_start ? Carbon::parse($attendance->break2_start)->format('H:i') : '';
         $break2_end = $attendance->break2_end ? Carbon::parse($attendance->break2_end)->format('H:i') : '';
          
-        return view('admin.detail', compact('attendance','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
+        $user = $attendance->user;
+
+        return view('admin.detail', compact('attendance', 'user', 'targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
+    }
+
+    public function updateDetail(DetailRequest $request, $id) 
+    {
+        $attendance = Attendance::find($id);
+
+        //１ フォームの内容をセット
+        $attendance->clock_in = $request->input('clock_in');
+        $attendance->clock_out = $request->input('clock_out');
+        $attendance->break1_start = $request->input('break1_start');
+        $attendance->break1_end = $request->input('break1_end');
+        $attendance->break2_start = $request->input('break2_start');
+        $attendance->break2_end = $request->input('break2_end');
+        $attendance->note = $request->input('note');
+
+        // ２　編集不可状態にする
+        $attendance->is_editable = false;
+
+        // ３　Attendanceを上書き
+        $attendance->save();        
+
+        // ４　修正申請を作る
+        // ４ー１　承認待ちステータスを取得
+        $pendingAttendance = ApproveStatus::where('status', '承認待ち')->first();
+
+        // ４－２　修正申請を登録
+        $updatedAttendance = new UpdatedAttendance();
+        $updatedAttendance->user_id = $attendance->user_id;
+        $updatedAttendance->attendance_id = $id;
+        $updatedAttendance->approve_status_id =             $pendingAttendance->id ?? 1;
+        $updatedAttendance->update_date = now();
+        $updatedAttendance->note = $request->input('note');
+        $updatedAttendance->save();
+        
+        return redirect()->route('admin.showDetail', ['id' => $id]);
+    }
+
+    public function indexUpdated (Request $request)
+    {
+        $user = Auth::user();
+        
+        // クエリパラメータ ?page=pending or ?page=updated
+        $page = $request->query('page', 'pending'); // デフォルトは「承認待ち」
+
+        $query = UpdatedAttendance::with(['attendance', 'approveStatus'])
+        ->orderBy('updated_at', 'desc');
+
+    // ステータスによって絞り込み
+        if ($page === 'pending') {
+            $query->whereHas('approveStatus', function($q) {
+            $q->where('status', '承認待ち');
+            });
+        } elseif ($page === 'updated') {
+            $query->whereHas('approveStatus', function($q) {
+            $q->where('status', '承認済み');
+            });
+        }
+
+        $requests = $query->get();
+
+        return view('user.updated-attendance', compact('requests', 'page'));
     }
 }

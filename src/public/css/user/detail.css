@@ -146,3 +146,28 @@ body {
     padding: 8px 12px;
    
 }
+
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+
+    /* 例：コンテナ幅を少し広げる */
+    .container {
+        width: 900px;
+    }
+
+    /* 例：フォームアイテムの間隔を調整 */
+    .detail-form__item {
+        gap: 40px;
+        height: auto;
+    }
+
+    /* 例：ボタンの幅を調整 */
+    .detail-form__button {
+        width: 180px;
+        font-size: 18px;
+    }
+
+    /* 例：textarea の幅を広げる */
+    .detail-form__textarea {
+        width: 320px;
+    }
+}

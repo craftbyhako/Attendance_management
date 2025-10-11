@@ -42,7 +42,7 @@
                         <td>{{ $attendance->clock_out}}</td>
                         <td>{{ $attendance->totalBreakTime }}</td>
                         <td>{{ $attendance->totalWorkingTime }}</td>
-                        <td><a href="{{ route('user.showDetail', ['id' => $attendance->id]) }}">詳細</a></td>
+                        <td><a href="{{ route('admin.showDetail', ['id' => $attendance->id]) }}">詳細</a></td>
                     </tr>
                     @endforeach
                 </tbody>

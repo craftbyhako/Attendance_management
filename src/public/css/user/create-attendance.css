@@ -69,3 +69,37 @@ body {
     font-weight: bold;
     margin: 50px;
 }
+
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .container {
+        padding-top: 100px;
+        /* 余白を少し広げて中央バランスを取る */
+    }
+
+    .create__form {
+        width: 700px;
+        /* 少し広めに */
+    }
+
+    .create__item--date {
+        font-size: 28px;
+        /* 視認性を維持 */
+    }
+
+    .create__item--time {
+        font-size: 55px;
+        /* 大きめディスプレイでバランス調整 */
+        margin: 25px;
+    }
+
+    .create__button--black,
+    .create__button--white {
+        font-size: 22px;
+        padding: 12px 60px;
+    }
+
+    .create__message {
+        font-size: 22px;
+        margin: 60px;
+    }
+}

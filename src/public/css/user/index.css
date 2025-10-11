@@ -94,4 +94,39 @@ body {
     color: black; 
 }
 
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .container {
+        width: 80%;
+        max-width: 900px;
+        margin: 100px auto 0;
+    }
+
+    .page-title {
+        font-size: 28px;
+        margin-bottom: 40px;
+    }
+
+    .index__group--target {
+        font-size: 20px;
+        padding: 16px 24px;
+        border-radius: 8px;
+    }
+
+    .index__group--table {
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .index__group--table th,
+    .index__group--table td {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+
+    .index__group--table td a {
+        padding: 4px 10px;
+        font-size: 13px;
+    }
+}
+
 

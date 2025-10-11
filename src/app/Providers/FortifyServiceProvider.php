@@ -111,6 +111,8 @@ class FortifyServiceProvider extends ServiceProvider
             return new class implements LoginResponse {
                 public function toResponse ($request)
                 {
+                    $request->session()->regenerate();
+                    
                     if (auth()->user()->admin_role == 1) {
                         return redirect()->route('admin.index');
                     }    

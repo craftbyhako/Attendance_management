@@ -150,3 +150,30 @@ body {
     cursor: pointer;
     color: black;
 }
+
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    .container {
+        width: 80%;
+        max-width: 900px;
+    }
+
+    .tab__list {
+        gap: 60px;
+        padding-left: 40px;
+    }
+
+    .tab__index table {
+        font-size: 13px;
+    }
+
+    .index__group--table th,
+    .index__group--table td {
+        font-size: 13px;
+        padding: 6px 4px;
+    }
+
+    .index__group--target {
+        font-size: 18px;
+        padding: 16px;
+    }
+}
