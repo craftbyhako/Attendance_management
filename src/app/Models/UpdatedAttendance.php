@@ -13,7 +13,7 @@ class UpdatedAttendance extends Model
     protected $fillable = [
         'user_id',
         'attendance_id',
-        'status_id',
+        'approve_status_id',
         'update_date',
         'note',
     ];
@@ -30,6 +30,6 @@ class UpdatedAttendance extends Model
     
     public function approveStatus()
     {
-        return $this->belongsTo(ApproveStatus::class);
+        return $this->belongsTo(ApproveStatus::class, 'approve_status_id');
     }
 }

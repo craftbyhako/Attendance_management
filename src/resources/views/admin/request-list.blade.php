@@ -10,8 +10,11 @@
     <div class="tab">
         <ul class="tab__list">
             <li>
-                <a href="/admin/requests?page=pending">承認待ち</a></li>
-            <li><a href="/admin/requests?page=updated">承認済み</a></li>
+                <a href="/admin/requests?page=pending" class="{{ $page === 'pending' ? 'active' : '' }}">承認待ち</a>
+            </li>
+            <li>
+                <a href="/admin/requests?page=updated" class="{{ $page === 'updated' ? 'active' : '' }}">承認済み</a>
+            </li>
         </ul>
     </div>
 

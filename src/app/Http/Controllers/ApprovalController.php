@@ -8,26 +8,29 @@ use Carbon\Carbon;
 use App\Models\Attendance;
 use App\Models\UpdatedAttendance;
 use App\Models\ApproveStatus;
+use Illuminate\Support\Facades\DB;
+
 
 class ApprovalController extends Controller
 {
-    public function indexUpdated(Request $request) {
+    public function indexRequests(Request $request) {
     
         // クエリパラメータ ?page=pending or ?page=updated
         $page = $request->query('page', 'pending'); // デフォルトは承認待ち
 
-        $query = \App\Models\UpdatedAttendance::with(['attendance', 'approveStatus', 'user'])
-        ->orderBy('updated_at', 'desc');
+        $latestIds = DB::table('updated_attendances')
+            ->selectRaw('MAX(id) as id')
+            ->groupBy('attendance_id');
+
+        $query = UpdatedAttendance::with(['attendance', 'approveStatus', 'user'])
+            ->whereIn('id', $latestIds->pluck('id'))
+            ->orderBy('updated_at', 'desc');
 
         // ステータスでフィルタ
         if ($page === 'pending') {
-        $query->whereHas('approveStatus', function ($q) {
-            $q->where('status', '承認待ち');
-        });
+            $query->where('approve_status_id', 1);
         } elseif ($page === 'updated') {
-        $query->whereHas('approveStatus', function ($q) {
-            $q->where('status', '承認済み');
-        });
+            $query->where('approve_status_id', 2);
         }
 
         $requests = $query->get();
@@ -36,14 +39,15 @@ class ApprovalController extends Controller
     }
     
     public function showRequest($id) {
+
+        $attendance = Attendance::with('user', 'updatedAttendances')->findOrFail($id);
         
-        $attendance = Attendance::find($id);
+        $latestUpdated = $attendance->updatedAttendances()
+            ->latest('update_date')
+            ->first();
 
-        // 承認ボタン押下時にロック解除
-        $attendance->is_editable = true;
-        $attendance->save();
-
-        $isLocked = $attendance->is_editable === true;
+        $canApprove = $latestUpdated && $latestUpdated->approve_status_id == 1;
+        $isLocked =  !$canApprove;
         
         $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
         ->locale('ja')
@@ -56,9 +60,24 @@ class ApprovalController extends Controller
         $break2_start = $attendance->break2_start ? trim(Carbon::parse($attendance->break2_start)->format('H:i')) : '';
         $break2_end = $attendance->break2_end ? trim(Carbon::parse($attendance->break2_end)->format('H:i')) : '';
               
-        return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
+        return view('admin.stamp', compact('attendance','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked', 'canApprove'));
     }
 
-    
+    public function updateRequest(Request $request, $id) {
+        $attendance = Attendance::with('updatedAttendances')->findOrFail($id);
+
+        $updated = $attendance->updatedAttendances()
+            ->latest('update_date')
+            ->first(); 
+
+        // 承認ボタン押下時にロック解除
+        if ($updated && $updated->approve_status_id == 1) {
+            $updated->approve_status_id = 2;
+            $updated->save();
+        }
+
+        return redirect()-> route('approval.showRequest', ['id' => $attendance->id]);
+    }
+
     
 }

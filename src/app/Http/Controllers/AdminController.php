@@ -9,6 +9,8 @@ use App\Models\Attendance;
 use App\Models\UpdatedAttendance;
 use App\Models\ApproveStatus;
 use App\Models\User;
+use App\Http\Requests\DetailRequest;
+
 
 
 class AdminController extends Controller
@@ -133,6 +135,7 @@ class AdminController extends Controller
         $updatedAttendance->note = $request->input('note');
         $updatedAttendance->save();
         
+
         return redirect()->route('admin.showDetail', ['id' => $id]);
     }
 
@@ -159,6 +162,6 @@ class AdminController extends Controller
 
         $requests = $query->get();
 
-        return view('user.updated-attendance', compact('requests', 'page'));
+        return view('admin.updated-attendance', compact('requests', 'page'));
     }
 }

@@ -21,6 +21,7 @@ class Attendance extends Model
         'break2_start',
         'break2_end',
         'note',
+        'is_editable',
     ];
 
     protected $casts = [
@@ -37,9 +38,10 @@ class Attendance extends Model
         return $this->belongsTo(AttendanceStatus::class);
     }
 
-    public function updatedAttendance()
+    public function updatedAttendances()
     {
         return $this->hasMany(UpdatedAttendance::class);
     }
+
 }
 

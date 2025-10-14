@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApprovalController;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,13 +39,14 @@ Route::middleware(['auth'])->group(function() {
 
         Route::get('/admin/attendances/{id}', [AdminController::class, 'showDetail'])->name('admin.showDetail');
 
-        // Route::patch('/admin/attendances/{id}', [ApprovalController::class, 'updateDetail'])->name('approval.updateDetail');
+        Route::patch('/admin/attendances/{id}', [AdminController::class, 'updateDetail'])->name('admin.updateDetail');
 
         // 管理者承認系
-        Route::get('/admin/requests', [ApprovalController::class, 'indexUpdated'])->name('approval.indexUpdated');
+        Route::get('/admin/requests', [ApprovalController::class, 'indexRequests'])->name('approval.indexRequests');
 
-        Route::get('/admin/attedance/{id}', [ApprovalController::class, 'showRequest'])->name('approval.showRequest');
+        Route::get('/admin/requests/{id}', [ApprovalController::class, 'showRequest'])->name('approval.showRequest');
 
+        Route::patch('/admin/requests/{id}', [ApprovalController::class, 'updateRequest'])->name('approval.updateRequest');
 
 });
 
