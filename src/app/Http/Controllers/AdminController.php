@@ -179,9 +179,11 @@ class AdminController extends Controller
     //     return view('admin.user-attendance-list');
     // }
 
-    public function userAttendances (Request $request) {
+    public function userAttendances (Request $request, $user) {
 
-        $user = User::select('user_name', 'id')->findOrFail($id);
+        $user = User::select('user_name', 'id')
+            ->where('user_name', $user)
+            ->firstOrFail();
         
         $target_month = $request->input('month', Carbon::now()->format('Y-m'));
 
@@ -242,7 +244,7 @@ class AdminController extends Controller
         $prev_month = $carbonMonth->copy()->subMonth()->format('Y-m');
         $next_month = $carbonMonth->copy()->addMonth()->format('Y-m');
         
-        return view('admin.user-attendance-list', compact('attendances', 'target_month', 'prev_month', 'next_month'));
+        return view('admin.user-attendance-list', compact('user','attendances', 'target_month', 'prev_month', 'next_month'));
     }
 
 }

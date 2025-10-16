@@ -1,17 +1,17 @@
 @extends('layouts.app')
 
 @section('css')
-<link rel="stylesheet" href="{{ asset('css/admin/index.css')}}">
+<link rel="stylesheet" href="{{ asset('css/admin/user-attendance-list.css')}}">
 @endsection
 
 @section('content')
 <div class="container">
     <h1 class="page-title">{{ $user->user_name }}の勤怠一覧</h1>
-    {{--
+  
     <div class="index__table"></div>
         <div class="index__group--target">
             <!-- 前月リンク -->
-            <a href="{{ route('admin.userAttendances', ['month' => $prev_month]) }}"><img src="{{ asset('storage/img/left_arrow.png') }}" alt="">　前月</a>
+            <a href="{{ route('admin.userAttendances', ['user' => $user->user_name, 'month' => $prev_month]) }}"><img src="{{ asset('storage/img/left_arrow.png') }}" alt="">　前月</a>
         
             <!-- 当月（デフォルト） -->
             <div class="center-month">
@@ -20,7 +20,7 @@
             </div>
 
             <!-- 次月リンク -->
-            <a href="{{ route('admin.index', ['month' => $next_month]) }}">翌月　<img src="{{ asset('storage/img/right_arrow.png') }}" alt=""></a>
+            <a href="{{ route('admin.userAttendances', ['user' => $user->user_name, 'month' => $next_month]) }}">翌月　<img src="{{ asset('storage/img/right_arrow.png') }}" alt=""></a>
         </div>
 
         <div class="index__group--table">
@@ -43,13 +43,13 @@
                         <td>{{ $attendance->clock_out}}</td>
                         <td>{{ $attendance->totalBreakTime }}</td>
                         <td>{{ $attendance->totalWorkingTime }}</td>
-                        <td><a href="{{ route('user.showDetail', ['id' => $attendance->id]) }}">詳細</a></td>
+                        <td><a href="{{ route('admin.showDetail', ['id' => $attendance->id]) }}">詳細</a></td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-    </div> --}}
+    </div>
 </div>
 @endsection
 
