@@ -15,7 +15,7 @@ class DetailRequest extends FormRequest
 
     public function rules()
     {
-        $isDetailUpdate = $this->route() && $this->route()->getActionName() === 'App\Http\Controllers\UserController@updateDetail';
+        $isDetailUpdate = $this->route() && str_contains($this->route()->getActionName(), 'updateDetail');
 
 
         return [

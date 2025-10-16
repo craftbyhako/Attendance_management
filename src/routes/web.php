@@ -48,6 +48,10 @@ Route::middleware(['auth'])->group(function() {
 
         Route::patch('/admin/requests/{id}', [ApprovalController::class, 'updateRequest'])->name('approval.updateRequest');
 
+        Route::get('/admin/users', [AdminController::class, 'indexUsers'])->name('admin.indexUsers');
+
+        Route::get('/admin/users/{user}/attendances', [AdminController::class, 'userAttendances'])->name('admin.userAttendances');
+
 });
 
 // 共通ログアウト
