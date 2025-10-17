@@ -15,7 +15,7 @@
             <!-- 当月（デフォルト） -->
             <div class="center-month">
                 <img src="{{ asset('storage/img/calender.png') }}">
-                {{ $target_month }}
+                {{ $target_month_display }}
             </div>
 
             <!-- 次月リンク -->

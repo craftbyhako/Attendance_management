@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use App\Models\Attendance;
 use App\Models\UpdatedAttendance;
 use App\Models\ApproveStatus;
@@ -165,44 +166,55 @@ class AdminController extends Controller
         return view('admin.updated-attendance', compact('requests', 'page'));
     }
 
-    public function indexUsers () {
+    public function indexUsers () 
+    {
 
         $users = User::select('user_name', 'email')->get();
 
         return view('admin.user-list', compact('users'));
     }
 
-    // public function test() {
-        
-    //     $user = User::select('user_name', 'id')->findOrFail($id);
-        
-    //     return view('admin.user-attendance-list');
-    // }
-
-    public function userAttendances (Request $request, $user) {
+    public function userAttendances (Request $request, $user)
+    {
 
         $user = User::select('user_name', 'id')
             ->where('user_name', $user)
             ->firstOrFail();
         
         $target_month = $request->input('month', Carbon::now()->format('Y-m'));
+        $target_month_display = Carbon::createFromFormat('Y-m', $target_month)->format('Y/m');
 
-        $attendances = Attendance::where('year_month', $target_month)
-        ->where('user_id', $user->id)
-        ->select('id',
-                'user_id',
-                'year_month',
-                'day',
-                'clock_in',
-                'clock_out',
-                'break1_start',
-                'break1_end',
-                'break2_start',
-                'break2_end',
-        )
-        ->get()
-        ->map(function ($attendance) {
-            // 秒なし表示
+        // 月次テーブルを作る
+        $carbonMonth = Carbon::parse($target_month);
+        $startOfMonth = $carbonMonth->copy()->startOfMonth();
+        $endOfMonth = $carbonMonth->copy()->endOfMonth();
+
+        // 1か月分の日付を作る
+        $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
+
+        $attendancesFromDB = Attendance::where('user_id', $user->id)
+            ->where('year_month', $target_month)
+            ->get()
+            ->keyBy('day');
+
+         // 1か月分の勤怠配列を作成
+        $attendances = collect($period)->map(function($date) use ($attendancesFromDB, $target_month) {
+            $day = $date->day;
+
+
+        // DBにある場合はそのまま取得、ない場合は空データ
+        $attendance = $attendancesFromDB->has($day) ? $attendancesFromDB[$day] : (object)[
+            'id' => 0, 
+            'year_month' => $target_month,
+            'day' => $day,
+            'clock_in' => '',
+            'clock_out' => '',
+            'break1_start' => null,
+            'break1_end' => null,
+            'break2_start' => null,
+            'break2_end' => null,
+        ];
+
             $attendance->clock_in = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '';
             $attendance->clock_out = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
 
@@ -218,9 +230,13 @@ class AdminController extends Controller
             }
 
             // 分を変換
-            $hours = floor($totalBreakTime / 60);
-            $minutes = $totalBreakTime % 60;
-            $attendance->totalBreakTime = sprintf('%02d:%02d', $hours, $minutes);
+            if($totalBreakTime > 0) {
+                $hours = floor($totalBreakTime / 60);
+                $minutes = $totalBreakTime % 60;
+                $attendance->totalBreakTime = sprintf('%02d:%02d', $hours, $minutes);
+            }else{
+                $attendance->totalBreakTime = '';
+            }
 
             // 労働時間の計算
             if ($attendance->clock_in && $attendance->clock_out) {
@@ -240,11 +256,10 @@ class AdminController extends Controller
             return $attendance;
         });
 
-        $carbonMonth = Carbon::parse($target_month);
         $prev_month = $carbonMonth->copy()->subMonth()->format('Y-m');
         $next_month = $carbonMonth->copy()->addMonth()->format('Y-m');
         
-        return view('admin.user-attendance-list', compact('user','attendances', 'target_month', 'prev_month', 'next_month'));
+        return view('admin.user-attendance-list', compact('user','attendances', 'target_month','target_month_display', 'prev_month', 'next_month'));
     }
 
 }

@@ -1,0 +1,74 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    background-color: rgb(237, 235, 235);
+}
+
+.container {
+    width: 900px;
+    margin: 80px auto 0;
+}
+
+.page-title {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: left;
+    border-left: 6px black solid;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.user-list__table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 14px;
+}
+
+.user-list__group--table {
+    margin: 0 auto;
+    margin-bottom: 50px;
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffff;
+    font-size: 18px;
+    color: gray;
+    padding: 8px;
+    border-bottom: 1px solid lightgray;
+}
+
+.user-list__group--table table {
+    width: 100%;
+    /* div に合わせる */
+    border-collapse: collapse;
+}
+
+.user-list__group--table th,
+.user-list__group--table td {
+    padding: 8px 4px;
+    border-bottom: 1px solid lightgray;
+    font-size: 15px;
+    line-height: 19px;
+    letter-spacing: 0.15em;
+    text-align: center;
+}
+
+.user-list__group--table td:nth-child(2),
+.user-list__group--table td:nth-child(3),
+.user-list__group--table td:nth-child(4),
+.user-list__group--table td:nth-child(5) {
+    text-align: center;
+}
+
+.user-list__group--table td a {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
+}
+
+@media screen and (max-width: 1540px) and (min-width: 1400px){}

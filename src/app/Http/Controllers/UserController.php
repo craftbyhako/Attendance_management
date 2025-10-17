@@ -9,6 +9,7 @@ use App\Models\ApproveStatus;
 use App\Http\Requests\DetailRequest;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Log;
 
 
@@ -139,67 +140,73 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        
+
         $target_month = $request->input('month', Carbon::now()->format('Y-m'));
-        
-        $attendances = Attendance::where('year_month', $target_month)
-        ->where('user_id', $user->id)
-        ->select(
-            'id',
-            'user_id',
-            'year_month',
-            'day',
-            'clock_in',
-            'clock_out',
-            'break1_start',
-            'break1_end',
-            'break2_start',
-            'break2_end'
-        )
-        ->get()
-        ->map(function ($attendance) {
-            // 秒なし表示
+        $target_month_display = Carbon::createFromFormat('Y-m', $target_month)->format('Y/m');
+
+        // 月初と月末
+        $carbonMonth = Carbon::parse($target_month);
+        $startOfMonth = $carbonMonth->copy()->startOfMonth();
+        $endOfMonth = $carbonMonth->copy()->endOfMonth();
+
+        // 1か月分の日付
+        $period = CarbonPeriod::create($startOfMonth, $endOfMonth);
+
+        // DBから取得
+        $attendancesFromDB = Attendance::where('user_id', $user->id)
+            ->where('year_month', $target_month)
+            ->get()
+            ->keyBy('day');
+
+        // 1か月分の勤怠を作成（空日も含む）
+        $attendances = collect($period)->map(function($date) use ($attendancesFromDB, $target_month) {
+            $day = $date->day;
+
+            $attendance = $attendancesFromDB->has($day) ? $attendancesFromDB[$day] : (object)[
+                'id' => 0, // 空日の場合
+                'year_month' => $target_month,
+                'day' => $day,
+                'clock_in' => '',
+                'clock_out' => '',
+                'break1_start' => null,
+                'break1_end' => null,
+                'break2_start' => null,
+                'break2_end' => null,
+            ];
+
+            // 出勤・退勤
             $attendance->clock_in = $attendance->clock_in ? Carbon::parse($attendance->clock_in)->format('H:i') : '';
             $attendance->clock_out = $attendance->clock_out ? Carbon::parse($attendance->clock_out)->format('H:i') : '';
 
-            // 休憩時間の計算
+            // 休憩時間
             $totalBreakTime = 0;
-            
             if ($attendance->break1_start && $attendance->break1_end) {
-                $totalBreakTime += Carbon::parse($attendance->break1_end)->diffInMinutes(Carbon::parse($attendance->break1_start)); 
+                $totalBreakTime += Carbon::parse($attendance->break1_end)->diffInMinutes(Carbon::parse($attendance->break1_start));
             }
-
             if ($attendance->break2_start && $attendance->break2_end) {
-                $totalBreakTime+= Carbon::parse($attendance->break2_end)->diffInMinutes(Carbon::parse($attendance->break2_start));
+                $totalBreakTime += Carbon::parse($attendance->break2_end)->diffInMinutes(Carbon::parse($attendance->break2_start));
             }
 
-            // 分を変換
-            $hours = floor($totalBreakTime / 60);
-            $minutes = $totalBreakTime % 60;
-            $attendance->totalBreakTime = sprintf('%02d:%02d', $hours, $minutes);
+            $attendance->totalBreakTime = $totalBreakTime > 0
+                ? sprintf('%02d:%02d', floor($totalBreakTime / 60), $totalBreakTime % 60)
+                : '';
 
-            // 労働時間の計算
+            // 労働時間
             if ($attendance->clock_in && $attendance->clock_out) {
                 $workMinutes = Carbon::parse($attendance->clock_out)->diffInMinutes(Carbon::parse($attendance->clock_in)) - $totalBreakTime;
-                
-                if ($workMinutes < 0){
-                    $workMinutes = 0;
-                }
-                
-                $workHours = floor($workMinutes / 60);
-                $workRemainMinutes = $workMinutes % 60;
-                $attendance->totalWorkingTime = sprintf('%02d:%02d', $workHours, $workRemainMinutes);
+                if ($workMinutes < 0) $workMinutes = 0;
+                $attendance->totalWorkingTime = sprintf('%02d:%02d', floor($workMinutes / 60), $workMinutes % 60);
             } else {
                 $attendance->totalWorkingTime = '';
             }
+
             return $attendance;
         });
 
-        $carbonMonth = Carbon::parse($target_month);
         $prev_month = $carbonMonth->copy()->subMonth()->format('Y-m');
         $next_month = $carbonMonth->copy()->addMonth()->format('Y-m');
-        
-        return view('user.index', compact('attendances', 'target_month', 'prev_month', 'next_month'));
+
+        return view('user.index', compact('attendances', 'target_month', 'prev_month', 'next_month', 'target_month_display'));
     }
 
     public function showDetail($id)
@@ -211,7 +218,7 @@ class UserController extends Controller
          // 存在しなければ 404
         if (!$attendance) {
             abort(404, '勤怠情報が存在しません');
-    }
+        }
         
         $isLocked = (bool)$attendance->is_editable === false;
 
@@ -280,7 +287,7 @@ class UserController extends Controller
         ->where('user_id', $user->id)
         ->orderBy('updated_at', 'desc');
 
-    // ステータスによって絞り込み
+        // ステータスによって絞り込み
         if ($page === 'pending') {
             $query->whereHas('approveStatus', function($q) {
             $q->where('status', '承認待ち');
