@@ -13,14 +13,11 @@ class ChangeAdminRoleDefaultInUsersTable extends Migration
      */
     public function up()
     {
+        // NULLのデータは0に更新
         DB::table('users')->whereNull('admin_role')->update(['admin_role' => 0]);
 
-
-        Schema::table('users', function (Blueprint $table) {
-
-            $table->integer('admin_role')->default(0)->change();
-
-        });
+        // DoctrineなしでSQL直接実行（MySQL想定）
+        DB::statement("ALTER TABLE users MODIFY admin_role INT DEFAULT 0");
     }
 
     /**
@@ -30,8 +27,6 @@ class ChangeAdminRoleDefaultInUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->integer('admin_role')->nullable()->default(null)->change();
-        });
+       DB::statement("ALTER TABLE users MODIFY admin_role INT DEFAULT NULL");
     }
 }

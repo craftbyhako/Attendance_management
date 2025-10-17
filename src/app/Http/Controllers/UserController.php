@@ -265,9 +265,10 @@ class UserController extends Controller
         $pendingAttendance = ApproveStatus::where('status', '承認待ち')->first();
 
         // ４－２　修正申請を登録
-        $updatedAttendance = new UpdatedAttendance();
-        $updatedAttendance->user_id = $user->id;
-        $updatedAttendance->attendance_id = $id;
+        $updatedAttendance = UpdatedAttendance::firstOrNew([
+            'user_id' => $user->id,
+            'attendance_id' => $id,
+        ]);
         $updatedAttendance->approve_status_id =             $pendingAttendance->id ?? 1;
         $updatedAttendance->update_date = now();
         $updatedAttendance->note = $request->input('note');
