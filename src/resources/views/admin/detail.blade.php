@@ -33,77 +33,86 @@
 <!-- 出勤・退勤時間（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label" >出勤・退勤</p>
-                <input class="detail-form__input" type="time" name="clock_in" value="{{ old('clock_in', trim($clock_in)) }}" {{ $isLocked ? 'readonly' : '' }}>
+                <div class="detail-form__wrapper">
+                    <div class="detail-form__row">
+                        <input class="detail-form__input" type="time" name="clock_in" value="{{ old('clock_in', trim($clock_in)) }}" {{ $isLocked ? 'readonly' : '' }}>
 
-                <span>～</span>
-                <input class="detail-form__input" type="time" name="clock_out" value="{{ trim(old('clock_out', $clock_out ?? '')) }}" {{ $isLocked ? 'readonly' : '' }}>
+                        <span>～</span>
+                        <input class="detail-form__input" type="time" name="clock_out" value="{{ trim(old('clock_out', $clock_out ?? '')) }}" {{ $isLocked ? 'readonly' : '' }}>
 
-                <div class="error-messages">
-                @error('clock_in') 
-                    {{ $message }}
-                @enderror
-                @error('clock_out')
-                    {{ $message }}
-                @enderror
+                        <div class="error-messages">
+                            @error('clock_in') 
+                                {{ $message }}
+                            @enderror
+                            @error('clock_out')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
 
 <!-- 休憩１（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label">休憩</p>
-                <input class="detail-form__input" type="time" name="break1_start" value="{{ old('break1_start', trim($break1_start)) }}" {{ $isLocked ? 'readonly' : '' }}>
+                <div class="detail-form__wrapper">
+                    <div class="detail-form__row">
+                        <input class="detail-form__input" type="time" name="break1_start" value="{{ old('break1_start', trim($break1_start)) }}" {{ $isLocked ? 'readonly' : '' }}>
 
-                <span>～</span>
-                <input class="detail-form__input" type="time" name="break1_end" value="{{ old('break1_end', trim($break1_end)) }}" {{ $isLocked ? 'readonly' : '' }}>
+                        <span>～</span>
+                        <input class="detail-form__input" type="time" name="break1_end" value="{{ old('break1_end', trim($break1_end)) }}" {{ $isLocked ? 'readonly' : '' }}>
 
-                <div class="error-messages">
-                @error('break1_start') 
-                    {{ $message }}
-                @enderror
-                @error('break1_end')
-                    {{ $message }}
-                @enderror
+                        <div class="error-messages">
+                            @error('break1_start') 
+                                {{ $message }}
+                            @enderror
+                            @error('break1_end')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
 
 <!-- 休憩２（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label">休憩２</p>
-                <input class="detail-form__input" type="time" name="break2_start" value="{{ old('break2_start', trim($break2_start)) }}" {{ $isLocked ? 'readonly' : '' }}>
-                               
-                <span>～</span>
-                               
-                <input class="detail-form__input" type="time" name="break2_end" value="{{ old('break2_end', trim($break2_end)) }}" {{ $isLocked ? 'readonly' : '' }}>
-                <div class="error-messages">
-                @error('break2_start') 
-                    {{ $message }}
-                @enderror
-                @error('break2_end')
-                    {{ $message }}
-                @enderror
+                <div class="detail-form__wrapper">
+                    <div class="detail-form__row">
+                        <input class="detail-form__input" type="time" name="break2_start" value="{{ old('break2_start', trim($break2_start)) }}" {{ $isLocked ? 'readonly' : '' }}>
+                                    
+                        <span>～</span>
+                                    
+                        <input class="detail-form__input" type="time" name="break2_end" value="{{ old('break2_end', trim($break2_end)) }}" {{ $isLocked ? 'readonly' : '' }}>
+                        <div class="error-messages">
+                            @error('break2_start') 
+                                {{ $message }}
+                            @enderror
+                            @error('break2_end')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
                 </div>
             </div>
 
 <!-- 備考（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label">備考</p>
-                <textarea class="detail-form__textarea" name="note" {{ $isLocked ? 'readonly' : '' }}>{{ old('note', $attendance->note ?? '') }}</textarea>
+                <div class="detail-form__wrapper">
+                    <div class="detail-form__row">
+                        <textarea class="detail-form__textarea" name="note" {{ $isLocked ? 'readonly' : '' }}>{{ old('note', $attendance->note ?? '') }}</textarea>
 
-                <div class="error-messages">
-                    @error('note')
-                        {{ $message }}
-                    @enderror
-                </div>
+                        <div class="error-messages">
+                            @error('note')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                </div>            
             </div>
-        </div>
     
-        <!-- <div class="detail-form__button-group">
-            @if ($isLocked)
-                <button class="detail-form__button" type="submit">修 正</button>
-            @else
-                <p>※　承認待ちのため修正はできません</p>
-            @endif
-        </div> -->
+       
             @if ($isLocked)
                 <div class="locked-wrapper">
                     <p class="locked-message">※　承認待ちのため修正はできません。</p>

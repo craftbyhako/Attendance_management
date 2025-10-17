@@ -35,13 +35,16 @@ body {
 
 .tab__list li a {
     text-decoration: none;
-    color: black;
+    color: rgb(126, 125, 125);
     font-weight: bold;
     font-size: 16px;
     padding-bottom: 5px;
-    border-bottom: 3px solid transparent;
-    transition: all 0.2s ease;
     cursor: pointer;
+}
+
+.tab__list li a.active {
+    font-weight: bold;
+    color: black;
 }
 
 .tab__content {

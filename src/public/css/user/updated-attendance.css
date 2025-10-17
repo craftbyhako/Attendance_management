@@ -44,6 +44,11 @@ body {
     cursor: pointer;
 }
 
+.tab__list li a.active {
+    font-weight: bold;
+    color: black;
+}
+
 .tab__content {
     background-color: #fff;
     border-radius: 3px;
