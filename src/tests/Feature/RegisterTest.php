@@ -47,7 +47,7 @@ class RegisterTest extends TestCase
         $this->assertEquals('メールアドレスを入力してください', $errors->first('email'));
     }
 
-    //会員情報登録--パスワードバリデーション
+     //会員情報登録--パスワードバリデーション
     public function test_register_user_validate_password()
     {
         $response = $this->post('/register', [
@@ -56,6 +56,12 @@ class RegisterTest extends TestCase
             'password' => '',
             'password_confirmation' => 'password',
         ]);
+
+        $response->assertStatus(302);
+        $response->assertSessionHasErrors('password');
+
+        $errors = session('errors');
+        $this->assertEquals('パスワードを入力してください', $errors->first('password'));
     }
 
      //会員情報登録--パスワード7文字以下
@@ -72,7 +78,7 @@ class RegisterTest extends TestCase
         $response->assertSessionHasErrors('password');
 
         $errors = session('errors');
-        $this->assertEquals('パスワードは8文字以上で入力してください', $errors->first('password'));
+        $this->assertEquals('パスワードは８文字以上で入力してください', $errors->first('password'));
     }
 
     //会員情報登録--パスワード不一致
@@ -102,7 +108,7 @@ class RegisterTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $response->assertRedirect('/email/verify');
+        $response->assertRedirect('/attendance');
         $this->assertDatabaseHas(User::class, [
             'user_name' => 'テストユーザ',
             'email' => 'test@gmail.com',
