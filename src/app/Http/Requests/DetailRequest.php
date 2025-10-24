@@ -23,9 +23,7 @@ class DetailRequest extends FormRequest
             
             'clock_out' => ['required', 'date_format:H:i'],
             
-            'break1_start' => ['nullable', 'date_format:H:i', 'after_or_equal:clock_in', 'before_or_equal:clock_out'],
-            // 'break1_start' => ['nullable', 'date_format:H:i', 'after_or_equal:clock_in', 'before_or_equal:break1_end'],
-            
+            'break1_start' => ['nullable', 'date_format:H:i', 'after_or_equal:clock_in', 'before_or_equal:clock_out'],            
             'break1_end' => ['nullable', 'date_format:H:i', 'after_or_equal:break1_start', 'before:clock_out'],
             
             'break2_start' => ['nullable', 'date_format:H:i', 'after_or_equal:break1_end', 'before_or_equal:clock_out'],
@@ -39,7 +37,7 @@ class DetailRequest extends FormRequest
     public function messages() {
         return [
         'clock_in.required' => '出勤時間を入力してください',
-        'clock_in.before' => '出勤時間が不適切な値です',
+        'clock_in.before' => '出勤時間もしくは退勤時間が不適切な値です',
         'clock_out.required' => '退勤時間を入力してください',
         'break1_start.after_or_equal' => '休憩時間が不適切な値です',
         'break1_start.before_or_equal' => '休憩時間が不適切な値です',

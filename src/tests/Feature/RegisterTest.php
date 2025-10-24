@@ -27,7 +27,7 @@ class RegisterTest extends TestCase
         $response->assertSessionHasErrors(['user_name']);
 
         $errors = session('errors');
-        $this->assertEquals('ユーザー名を入力してください', $errors->first('user_name'));
+        $this->assertEquals('お名前を入力してください', $errors->first('user_name'));
     }
 
         //会員情報登録--メアドバリデーション

@@ -124,6 +124,28 @@ body {
         /* 入力との間隔 */
 }
 
+.approved-wrapper {
+    width: 100%;
+    text-align: right;
+    margin: 5px -50px -10px -50px;
+    padding: 10px 50px;
+    background-color: rgb(237, 235, 235);
+}
+
+.approved-message {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 2px solid #666666;
+    border-radius: 3px;
+    background-color: #666666;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    width: 120px;
+}
+
+
+
 .locked-wrapper {
     width: 100%;
     text-align: right;
@@ -142,6 +164,7 @@ body {
     background-color: rgb(237, 235, 235);
     margin: 0 -50px -10px -50px;
 }
+
 
 .detail-form__button {
     width: 150px;

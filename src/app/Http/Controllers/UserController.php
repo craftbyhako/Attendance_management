@@ -213,14 +213,14 @@ class UserController extends Controller
     {
         $user = Auth::user();
         
-        $attendance = Attendance::find($id);
+        $attendance = Attendance::with('updatedAttendances')->findOrFail($id);
 
-         // 存在しなければ 404
-        if (!$attendance) {
-            abort(404, '勤怠情報が存在しません');
-        }
-        
-        $isLocked = (bool)$attendance->is_editable === false;
+        $latestUpdated = $attendance->updatedAttendances()
+        ->latest('update_date')
+        ->first();
+
+        $isLocked = $latestUpdated && in_array($latestUpdated->approve_status_id, [1, 2]);   // 承認待ち,承認済み
+        $isApproved = $latestUpdated && $latestUpdated->approve_status_id == 2; // 承認済み
 
         $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
         ->locale('ja')
@@ -233,7 +233,7 @@ class UserController extends Controller
         $break2_start = $attendance->break2_start ? trim(Carbon::parse($attendance->break2_start)->format('H:i')) : '';
         $break2_end = $attendance->break2_end ? trim(Carbon::parse($attendance->break2_end)->format('H:i')) : '';
 
-        return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
+        return view('user.detail', compact('attendance','user','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked', 'isApproved'));
     }
 
     public function updateDetail(DetailRequest $request, $id) 

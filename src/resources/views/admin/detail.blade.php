@@ -112,8 +112,21 @@
                 </div>            
             </div>
     
-       
-            @if ($isLocked)
+            <div class="detail-form__button-group">
+                @if ($isApproved)
+                    <div class="approved-wrapper">
+                        <p class="approved-message">承 認 済 み</p>
+                    </div>
+                @elseif ($isLocked)
+                    <div class="locked-wrapper">
+                        <p class="locked-message">※　承認待ちのため修正はできません。</p>
+                    </div>
+                @else
+                    <button class="detail-form__button" type="submit">修 正</button>
+                @endif
+            </div>
+
+            {{-- @if ($isLocked)
                 <div class="locked-wrapper">
                     <p class="locked-message">※　承認待ちのため修正はできません。</p>
                 </div>
@@ -121,7 +134,7 @@
                 <div class="detail-form__button-group">
                     <button class="detail-form__button" type="submit">修 正</button>
                 </div>
-            @endif
+            @endif --}}
         </div>
     </form>
 </div>

@@ -16,6 +16,7 @@ class UpdatedAttendance extends Model
         'approve_status_id',
         'update_date',
         'note',
+        
     ];
 
     public function user()

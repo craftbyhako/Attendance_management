@@ -84,10 +84,17 @@ class AdminController extends Controller
     public function showDetail($id)
     {
         
-        $attendance = Attendance::with('user')->findOrFail($id);
+        $attendance = Attendance::with('user', 'updatedAttendances')->findOrFail($id);
 
-        $isLocked = !(bool)$attendance->is_editable;
-        
+        // 最新の更新申請を取得
+        $latestUpdated = $attendance->updatedAttendances()
+            ->latest('update_date')
+            ->first();
+        // $isLocked = !(bool)$attendance->is_editable;
+        // 承認待ち・承認済みはフォームをロック
+        $isLocked = $latestUpdated && in_array($latestUpdated->approve_status_id, [1, 2]);
+        $isApproved = $latestUpdated && $latestUpdated->approve_status_id == 2;
+
         $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
         ->locale('ja')
         ->isoFormat('YYYY年M月D日');
@@ -101,7 +108,7 @@ class AdminController extends Controller
          
         $user = $attendance->user;
 
-        return view('admin.detail', compact('attendance', 'user', 'targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked'));
+        return view('admin.detail', compact('attendance', 'user', 'targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked', 'isApproved'));
     }
 
     public function updateDetail(DetailRequest $request, $id) 

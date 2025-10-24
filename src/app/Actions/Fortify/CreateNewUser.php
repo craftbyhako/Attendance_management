@@ -27,9 +27,9 @@ class CreateNewUser implements CreatesNewUsers
         ];
 
         $messages = [
-            'user_name.required' => 'ユーザー名を入力してください',
-            'user_name.string' => 'ユーザー名は文字で入力してください',
-            'user_name.max' => 'ユーザー名は２０文字以内で入力してください',
+            'user_name.required' => 'お名前を入力してください',
+            'user_name.string' => 'お名前は文字で入力してください',
+            'user_name.max' => 'お名前は２０文字以内で入力してください',
             'email.required' => 'メールアドレスを入力してください',
             'email.email' => 'メール形式で入力してください',
             'email.string' => 'メールアドレスは文字で入力してください',
