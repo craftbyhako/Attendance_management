@@ -39,8 +39,8 @@ class AttendanceClockOutTest extends TestCase
             'user_id' => $user->id,
             'attendance_status_id' => $onStatus->id,
             'year_month' => $now->format('Y-m'),
-            'day' => $now->format('d'),
-            'clock_in' => $now->subHours(8)->format('H:i:s'),
+            'day' => $now->day,
+            'clock_in' => $now->copy()->subHours(8)->format('H:i:s'),
             'clock_out' => null,
             'is_editable' => 1,
         ]);
@@ -55,7 +55,7 @@ class AttendanceClockOutTest extends TestCase
             'user_id' => $user->id,
             'attendance_status_id' => $clockedOutStatus->id,
             'year_month' => $now->format('Y-m'),
-            'day' => $now->format('d'),
+            'day' => $now->day,
         ]);
 
         $response = $this->get(route('user.create'));

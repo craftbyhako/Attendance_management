@@ -10,7 +10,7 @@
 <div class="container">
     <h1 class="page-title">勤怠詳細</h1>
 
-    <form class="detail-form" action="{{ route('approval.updateRequest', ['id' => $attendance->id]) }}" method="POST">
+    <form class="detail-form" action="{{ route('approval.updateRequest', ['id' => $updatedAttendance->id]) }}" method="POST">
         @csrf
         @method('PATCH')
 
@@ -84,7 +84,7 @@
 <!-- 備考（表示と修正） -->
             <div class="detail-form__item">
                 <p class="detail-form__label">備考</p>
-                <textarea class="detail-form__textarea" name="note" {{ $isLocked ? 'readonly' : '' }}>{{ old('note', $attendance->note ?? '') }}</textarea>
+                <textarea class="detail-form__textarea" name="note" {{ $isLocked ? 'readonly' : '' }}>{{ old('note', $note ?? '') }}</textarea>
 
                 <div class="error-messages">
                     @error('note')
