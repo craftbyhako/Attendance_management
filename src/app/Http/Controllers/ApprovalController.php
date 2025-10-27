@@ -23,7 +23,7 @@ class ApprovalController extends Controller
             ->groupBy('attendance_id');
 
         $query = UpdatedAttendance::with(['attendance', 'approveStatus', 'user'])
-            ->whereIn('id', $latestIds->pluck('id'))
+            ->whereIn('id', $latestIds->pluck('id')->toArray())
             ->orderBy('updated_at', 'desc');
 
         // ステータスでフィルタ
@@ -40,13 +40,11 @@ class ApprovalController extends Controller
     
     public function showRequest($id) {
 
-        $attendance = Attendance::with('user', 'updatedAttendances')->findOrFail($id);
-        
-        $latestUpdated = $attendance->updatedAttendances()
-            ->latest('update_date')
-            ->first();
+        $updatedAttendance = UpdatedAttendance::with('attendance.user')->findOrFail($id);
 
-        $canApprove = $latestUpdated && $latestUpdated->approve_status_id == 1;
+        $attendance = $updatedAttendance->attendance;
+        
+        $canApprove = $updatedAttendance->approve_status_id == 1;
         $isLocked =  !$canApprove;
         
         $targetDate = Carbon::parse($attendance->year_month. '-'. $attendance->day)
@@ -60,7 +58,7 @@ class ApprovalController extends Controller
         $break2_start = $attendance->break2_start ? trim(Carbon::parse($attendance->break2_start)->format('H:i')) : '';
         $break2_end = $attendance->break2_end ? trim(Carbon::parse($attendance->break2_end)->format('H:i')) : '';
               
-        return view('admin.stamp', compact('attendance','targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked', 'canApprove'));
+        return view('admin.stamp', compact('attendance', 'updatedAttendance', 'targetDate', 'clock_in', 'clock_out','break1_start', 'break1_end', 'break2_start', 'break2_end', 'isLocked', 'canApprove'));
     }
 
     public function updateRequest(Request $request, $id) {

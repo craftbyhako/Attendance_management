@@ -82,7 +82,7 @@ class AdminApprovalRequestsTest extends TestCase
     }
 
     /** @test */
-    public function admin_pending_approval_requests()
+    public function test_admin_pending_approval_requests()
     {
         $response = $this->actingAs($this->admin)
             ->get('/admin/requests?page=pending');
@@ -96,12 +96,12 @@ class AdminApprovalRequestsTest extends TestCase
                 ->first();
 
             $response->assertSee($user->user_name);
-            $response->assertSee('10:00');
+            $response->assertSee($pending->note);
         }
     }
 
     /** @test */
-    public function admin_approved_approval_requests()
+    public function test_admin_approved_approval_requests()
     {
         $response = $this->actingAs($this->admin)
             ->get('/admin/requests?page=approved');
@@ -120,7 +120,7 @@ class AdminApprovalRequestsTest extends TestCase
     }
 
     /** @test */
-    public function admin_updated_attendance_detail()
+    public function test_admin_updated_attendance_detail()
     {
         $targetUser = $this->users->first();
         $pending = DB::table('updated_attendances')
@@ -133,11 +133,11 @@ class AdminApprovalRequestsTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee($targetUser->user_name);
-        $response->assertSee('10:00'); // 修正申請内容
+        $response->assertSee($pending->note); // 修正申請内容
     }
 
     /** @test */
-    public function admin_approve_a_request()
+    public function test_admin_approve_a_request()
     {
         $targetUser = $this->users->first();
         $pending = DB::table('updated_attendances')
@@ -146,9 +146,9 @@ class AdminApprovalRequestsTest extends TestCase
             ->first();
 
         $response = $this->actingAs($this->admin)
-            ->post('/admin/requests/' . $pending->id);
+            ->patch('/admin/requests/' . $pending->id);
 
-        $response->assertRedirect('/admin/requests?page=pending');
+        $response->assertRedirect('/admin/requests/' . $pending->id);
 
         // 承認済みに更新されているか確認
         $this->assertDatabaseHas('updated_attendances', [

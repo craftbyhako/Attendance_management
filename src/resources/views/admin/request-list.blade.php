@@ -38,18 +38,18 @@
                             <td>{{ $updatedRequest->approveStatus->status ?? '' }}</td>
                             <td>{{ $updatedRequest->user->user_name ?? '' }}</td>
                             <td>{{ $updatedRequest->attendance->year_month ?? '' }}-{{ $updatedRequest->attendance->day ?? '' }}</td>
-                            <td>{{ $updatedRequest->attendance->note ?? '' }}</td>
+                            <td>{{ $updatedRequest->note ?? '' }}</td>
                             <td>{{ optional($updatedRequest->created_at)->format('Y-m-d') }}</td>
-                            <td><a href="{{ route('approval.showRequest', ['id' => $updatedRequest->attendance_id]) }}">詳細</a></td>
+                            <td><a href="{{ route('approval.showRequest', ['id' => $updatedRequest->id]) }}">詳細</a></td>
                         </tr>
                     @else
                         <tr class="tab__index--updated">
                             <td>{{ $updatedRequest->approveStatus->status ?? '' }}</td>
                             <td>{{ $updatedRequest->user->user_name ?? '' }}</td>
                             <td>{{ $updatedRequest->attendance->year_month ?? '' }}-{{ $updatedRequest->attendance->day ?? '' }}</td>
-                            <td>{{ $updatedRequest->attendance->note ?? '' }}</td>
+                            <td>{{ $updatedRequest->note ?? '' }}</td>
                             <td>{{ optional($updatedRequest->created_at)->format('Y-m-d') }}</td>
-                            <td><a href="{{ route('approval.showRequest', ['id' => $updatedRequest->attendance_id]) }}">詳細</a></td>
+                            <td><a href="{{ route('approval.showRequest', ['id' => $updatedRequest->id]) }}">詳細</a></td>
                         </tr>   
                         @endif           
                     @endforeach
