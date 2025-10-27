@@ -89,4 +89,60 @@ class AttendanceStatusCheckTest extends TestCase
 
         Carbon::setTestNow();
     }
+
+     /** 休憩中の場合 */
+    public function test_attendance_status_is_on_break()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $breakStatus = AttendanceStatus::create(['status' => '休憩中']);
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Attendance::create([
+            'user_id' => $user->id,
+            'attendance_status_id' => $breakStatus->id,
+            'year_month' => $now->format('Y-m'),
+            'day' => $now->format('d'),
+            'clock_in' => $now->copy()->subHours(2),
+            'break1_start' => $now->copy()->subMinutes(30),
+            'is_editable' => 1,
+        ]);
+
+        $response = $this->get(route('user.create'));
+        $response->assertStatus(200);
+        $response->assertSee('休憩中');
+
+        Carbon::setTestNow();
+    }
+
+    /** 退勤済の場合 */
+    public function test_attendance_status_is_clocked_out()
+    {
+        $now = Carbon::now();
+        Carbon::setTestNow($now);
+
+        $outStatus = AttendanceStatus::create(['status' => '退勤済']);
+
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        Attendance::create([
+            'user_id' => $user->id,
+            'attendance_status_id' => $outStatus->id,
+            'year_month' => $now->format('Y-m'),
+            'day' => $now->format('d'),
+            'clock_in' => $now->copy()->subHours(8),
+            'clock_out' => $now,
+            'is_editable' => 1,
+        ]);
+
+        $response = $this->get(route('user.create'));
+        $response->assertStatus(200);
+        $response->assertSee('退勤済');
+
+        Carbon::setTestNow();
+    }
 }

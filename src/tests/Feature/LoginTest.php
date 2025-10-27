@@ -14,23 +14,6 @@ class LoginTest extends TestCase
 {
 
     use RefreshDatabase;
-     //ログイン機能
-    // public function test_login_user()
-    // {
-    //     $user = User::create([
-    //         'user_name' => 'テストユーザー',
-    //         'email' => 'general2@gmail.com',
-    //         'password' => Hash::make('password'),
-    //     ]);
-
-    //     $response = $this->post('/login', [
-    //         'email' => "general2@gmail.com",
-    //         'password' => "password",
-    //     ]);
-
-    //     $response->assertRedirect('/attendance');
-    //     $this->assertAuthenticatedAs($user);
-    // }
 
     //ログイン--メアドバリデーション
     public function test_login_user_validate_email()
