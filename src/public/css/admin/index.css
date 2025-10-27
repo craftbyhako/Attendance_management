@@ -95,3 +95,8 @@ body {
     cursor: pointer;
     color: black;
 }
+
+/* === PC標準 (1400〜1540px) === */
+@media screen and (min-width: 1400px) and (max-width: 1540px) {
+    /* メインデザイン */
+}

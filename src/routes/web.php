@@ -72,13 +72,13 @@ Route::post('/logout', function (Request $request) {
 
 // 管理者ログイン画面の表示
 Route::get('/admin/login', function () {
-    return view('auth.admin-login'); // ここで表示するBlade
+    return view('auth.admin-login'); 
 })->name('admin.login');
 
 
-// Fortifyに干渉しない管理者専用ログイン処理
+// Fortifyに干渉しない管理者専用ログイン処理（テスト用）
 Route::post('/admin/login', function (Request $request) {
-    // 入力チェック
+    
     $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],
@@ -87,17 +87,14 @@ Route::post('/admin/login', function (Request $request) {
         'password.required' => 'パスワードを入力してください',
     ]);
 
-    // 管理者の取得
     $user = User::where('email', $request->email)->first();
 
-    // 管理者判定＆パスワード一致確認
     if (! $user || ! $user->admin_role || ! Hash::check($request->password, $user->password)) {
         return back()->withErrors([
             'email' => 'ログイン情報が登録されていません',
         ])->withInput();
     }
 
-    // ログイン成功
     Auth::login($user);
     return redirect()->route('admin.index');
 });

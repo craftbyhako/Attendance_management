@@ -48,6 +48,9 @@ class DetailRequest extends FormRequest
         'break2_end.after_or_equal' => '休憩時間が不適切な値です',
         'break2_end.before' => '休憩時間もしくは退勤時間が不適切な値です',
         'note.required' => '備考を記入してください',
+        'note.string' => '文字で記入してください',
+        'note.max' => '２５５文字以内で記入してください',
+
         ];
     }
 }
