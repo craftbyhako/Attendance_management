@@ -17,15 +17,19 @@ class ApproveStatusesTableSeeder extends Seeder
      */
     public function run()
     {
-        $statuses = [
-            '承認待ち',
-            '承認済み',
-        ];
-
-        foreach($statuses as $status) {
-            DB::table('approve_statuses')->insert([
-                'status' => $status,
-            ]);
-        }
+        DB::table('approve_statuses')->insert([
+            [
+                'id' => 1,
+                'status' => '承認待ち',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 2,
+                'status' => '承認済み',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }

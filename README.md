@@ -142,7 +142,7 @@ create database test_database;
 ```
 
 - .env.testing` にテスト用 DB の情報を設定しておく。
-#### 例: `.env.testing`
+##### 例: `.env.testing`
 ```
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -166,6 +166,7 @@ php artisan test または ./vendor/bin/phpunit
 php artisan test --filter=LoginTest
 ```  
 
+## 特記事項
+- 一般ユーザー向けヘッダーのナビゲーションについて、一部Figmaのデザインと変更しています。出勤登録画面（/attendance）において、勤怠ステータスによりナビ名が変化していますが、遷移先の内容は同じため、ナビ名を統一しています。コーチに相談済みです。
 
-[def]: ER_attendance_management.png
-[def2]: ER_attendance_management.png
+- 休憩時間の打刻回数について、「１日に何回でも」という要件でしたが、コーチより、学習範囲の中では難易度が高いため２回でよいとお話をいただいたのでその通り実装しております。

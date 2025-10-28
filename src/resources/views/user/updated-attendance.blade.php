@@ -38,7 +38,7 @@
                             <td>{{ $updatedRequest->approveStatus->status ?? '' }}</td>
                             <td>{{ $updatedRequest->user->user_name ?? '' }}</td>
                             <td>{{ $updatedRequest->attendance->year_month ?? '' }}-{{ $updatedRequest->attendance->day ?? '' }}</td>
-                            <td>{{ $updatedRequest->attendance->note ?? '' }}</td>
+                            <td>{{ $updatedRequest->note ?? '' }}</td>
                             <td>{{ $updatedRequest->created_at ?   $updatedRequest->created_at->format('Y-m-d') : '' }}</td>
                             <td><a href="{{ route('user.showDetail', ['id' => $updatedRequest->attendance_id]) }}">詳細</a></td>
                         </tr>
@@ -47,7 +47,7 @@
                             <td>{{ $updatedRequest->approveStatus->status ?? '' }}</td>
                             <td>{{ $updatedRequest->user->user_name ?? '' }}</td>
                             <td>{{ $updatedRequest->attendance->year_month ?? '' }}-{{ $updatedRequest->attendance->day ?? '' }}</td>
-                            <td>{{ $updatedRequest->attendance->note ?? '' }}</td>
+                            <td>{{ $updatedRequest->note ?? '' }}</td>
                             <td>{{ $updatedRequest->created_at->format('Y-m-d') }}</td>
                             <td><a href="{{ route('user.showDetail', ['id' => $updatedRequest->attendance_id]) }}">詳細</a></td>
                         </tr>   

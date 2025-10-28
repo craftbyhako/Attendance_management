@@ -284,19 +284,15 @@ class UserController extends Controller
         // クエリパラメータ ?page=pending or ?page=updated
         $page = $request->query('page', 'pending'); // デフォルトは「承認待ち」
 
-        $query = UpdatedAttendance::with(['attendance', 'approveStatus'])
+        $query = UpdatedAttendance::with(['attendance', 'approveStatus', 'user'])
         ->where('user_id', $user->id)
         ->orderBy('updated_at', 'desc');
 
         // ステータスによって絞り込み
         if ($page === 'pending') {
-            $query->whereHas('approveStatus', function($q) {
-            $q->where('status', '承認待ち');
-            });
+            $query->where('approve_status_id', 1); 
         } elseif ($page === 'updated') {
-            $query->whereHas('approveStatus', function($q) {
-            $q->where('status', '承認済み');
-            });
+            $query->where('approve_status_id', 2);
         }
 
         $requests = $query->get();
