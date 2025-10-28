@@ -114,7 +114,7 @@ phpMyAdmin:：http://localhost:8080/　<br>
 
 
 ## ER図
-![alt](ER_attendance_management.png)
+![ER図](ER_attendance_management.png)
 
 
 ## テストアカウント
