@@ -1,2 +1,37 @@
+# Laravel 標準
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+/.phpunit.result.cache
+
+# 環境設定
+.env
+.env.backup
+
+# Docker 関連
+docker-compose.override.yml
 docker/mysql/data/*
+
+# Homestead / Vagrant
+Homestead.json
+Homestead.yaml
+
+# ログ・キャッシュ
+npm-debug.log
+yarn-error.log
+/public/hot
+/storage/*.log
+/storage/framework/cache/data
+/storage/framework/sessions
+/storage/framework/views
+
+# IDE / エディタ
+/.idea
+/.vscode
+
+# その他安全のため
+src/temp_*
+src_backup_*
+src_broken
 !.gitkeep
