@@ -165,3 +165,7 @@ php artisan test または ./vendor/bin/phpunit
 特定テストのみ実行する場合:
 php artisan test --filter=LoginTest
 ```  
+
+
+[def]: ER_attendance_management.png
+[def2]: ER_attendance_management.png
