@@ -1,0 +1,15 @@
+{
+    "intelephense.environment.includePaths": [
+        "vendor"
+    ],
+    "intelephense.files.maxSize": 5000000,
+    "intelephense.diagnostics.undefinedTypes": false,
+    "intelephense.diagnostics.undefinedFunctions": false,
+    "intelephense.diagnostics.undefinedConstants": false,
+    "intelephense.diagnostics.undefinedClassConstants": false,
+    "intelephense.diagnostics.undefinedProperties": false,
+    "intelephense.diagnostics.undefinedMethods": false,
+    "intelephense.diagnostics.undefinedVariables": false,
+    "intelephense.diagnostics.typeErrors": true
+}
+
