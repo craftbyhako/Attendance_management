@@ -18,6 +18,9 @@
 1.　docker-compose exec php bash　<br>
 2.　composer install　<br>
 3.「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成　<br>
+```
+作成する場合：cp .env.example .env
+```
 4.　.envに以下の環境変数を追加 <br>
 ```
         DB_CONNECTION=mysql
@@ -29,9 +32,11 @@
 ```
 5.アプリケーションキーの作成　<br>
     php artisan key:generate　<br>
-6.マイグレーションの実行　<br>
+6.ストレージのシンボリックリンクの作成　<br>
+    php artisan storage:link <br>
+7.マイグレーションの実行　<br>
     php artisan migrate　<br>
-7.シーディングの実行　<br>
+8.シーディングの実行　<br>
     php artisan db:seed　<br>
 
 ## 使用技術(実行環境)
