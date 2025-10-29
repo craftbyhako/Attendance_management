@@ -138,7 +138,7 @@ password: password
 ```
 docker-compose exec mysql bash
 mysql -u root -p (パスワードはrootと入力)
-create database test_database;
+create database demo_test;
 ```
 
 - .env.testing` にテスト用 DB の情報を設定しておく。
@@ -147,16 +147,15 @@ create database test_database;
 DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
-DB_DATABASE=test_database
+DB_DATABASE=demo_test
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
 
-- コンテナ内の PHP に入り、マイグレーション・シーディング実行。
+- コンテナ内の PHP に入り、テスト用マイグレーション・シーディング実行。
 ```
 docker-compose exec php bash
-php artisan migrate:fresh --env=testing
-php artisan db:seed --env=testing
+php artisan migrate:fresh --seed --env=testing
 ```
 - テストの実行。
 ```
